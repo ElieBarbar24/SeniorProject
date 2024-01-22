@@ -1,0 +1,119 @@
+<div class=" p-4" data-bs-theme="dark">
+    <div class="row was-validated bg-dark scheduler-form p-4">
+        <div class="col">
+            <div class="mb-3">
+                <label for="validationTextarea" class="form-label">Textarea</label>
+                <input class="form-control" id="validationTextarea" placeholder="Please Enter The Year" required>
+                <div class="invalid-feedback">
+                    Please Enter The Year
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <select class="form-select" required aria-label="select example">
+                    <option value="">Select Semester</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+                <div class="invalid-feedback">Select Semester</div>
+            </div>
+
+            <div class="mb-3">
+                <select class="form-select" required aria-label="Select Exam Type">
+                    <option value="">Select Exam Type</option>
+                    <option value="1">Final</option>
+                    <option value="2">MidTerm</option>
+
+                </select>
+                <div class="invalid-feedback">Select Exam Type</div>
+            </div>
+
+
+            <div class="mb-3">
+                <input type="file" class="form-control" aria-label="file example" (change)="onFileChange($event)"
+                    required>
+                <div class="invalid-feedback">Enter Exam Schedule</div>
+            </div>
+
+            <div class="mb-3">
+                <input type="file" class="form-control" aria-label="file example" required>
+                <div class="invalid-feedback">Enter Instructor Precense Schedule</div>
+            </div>
+
+            <div class="mb-3">
+                <button class="btn btn-primary" type="submit" disabled>Submit form</button>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <div class="row mt-4">
+            <div class=" table-responsive pt-sm-4 pt-md-1 col-md-6 col-sm-12">
+                <table class="table table-hover">
+                    <thead class="sticky-top">
+                      <tr class="table-dark text-center">
+                        <td class="">Code</td>
+                        <td class="">Course</td>
+                        <td class="">Section</td>
+                        <td class="">Instructor</td>
+                        <td class="">Final Exam Time</td>
+                        <td class="">Room</td>
+                        <td class=""># STD</td>
+                        <td class="">School</td>
+                        <td class="">Campus</td>
+                        <td class="">Final Exam Date</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let exam of Exams; let i = index">
+
+                        <ng-container *ngIf="i === 0 || Exams[i - 1].J !== exam.J">
+                          <tr  class="table-primary" >
+                            <td [attr.colspan]="ExamsKeys.length" class="text-center">
+                              {{ exam.J }}
+                            </td>
+                          </tr>
+                        </ng-container>
+                        <tr class="text-center table-secondary table-hover">
+                          <td *ngFor="let key of ExamsKeys">{{ exam[key] }}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+            </div>
+            <div class="table-responsive pt-sm-4  pt-md-1 col-md-6 col-sm-12 ">
+              <table class="table table-hover">
+                  <thead class="sticky-top">
+                    <tr class="table-dark text-center">
+                      <td class="">Code</td>
+                      <td class="">Course</td>
+                      <td class="">Section</td>
+                      <td class="">Instructor</td>
+                      <td class="">Final Exam Time</td>
+                      <td class="">Room</td>
+                      <td class=""># STD</td>
+                      <td class="">School</td>
+                      <td class="">Campus</td>
+                      <td class="">Final Exam Date</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let exam of Exams; let i = index">
+
+                      <ng-container *ngIf="i === 0 || Exams[i - 1].J !== exam.J">
+                        <tr  class="table-primary" >
+                          <td [attr.colspan]="ExamsKeys.length" class="text-center">
+                            {{ exam.J }}
+                          </td>
+                        </tr>
+                      </ng-container>
+                      <tr class="text-center table-secondary table-hover">
+                        <td *ngFor="let key of ExamsKeys">{{ exam[key] }}</td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+          </div>
+        </div>
+    </div>
+</div>

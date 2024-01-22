@@ -1,0 +1,48 @@
+<div class="h-100 bg-dark col-md-auto col-4 col-sm-4 col-md-3 col-lg-2  d-flex flex-column justify-content-between align-items-center position-fixed ">
+    <!-- col-4 col-sm-4 col-md-3 col-lg-2 -->
+    <div class="p-2" id="sidebar" >
+        <ul class="nav nav-pills flex-column mt-4 ">
+            <li class="nav-item py-2 py-sm-0 mb-2">
+                <a class="d-flex text-decoration-none mt-1 align-items-center  flex-column">
+                    <img src="https://liu.edu.lb/NewLIU2022/common/images/logo.png"
+                        class="fs-1 d-none text-center d-sm-inline" />
+                    <span class="display-6 text-warning d-none text-center d-sm-inline">LIU Exams Scheduler</span>
+                </a>
+            </li>
+            <li class="nav-item py-2 py-sm-0 mb-2" *ngFor="let data of navData">
+                <a (click)="navigateTo(data.routeLink)" class="nav-link text-white text-md-start text-sm-center"
+                    [ngClass]="{'active':activeLink == data.routeLink,'nav-item-hover':activeLink != data.routeLink}">
+                    <i class="fs-5 {{data.icon}} me-2"></i><span class="fs-4 d-none d-sm-inline ">{{data.label}}</span>
+                </a>
+            </li>
+            <li class="nav-item nav-item-logout py-2 py-sm-0 mb-2">
+                <a (click)="Logout()" href="#" class="nav-link text-danger text-md-start text-sm-center">
+                    <i class="fs-5 fa-solid fa-sign-out me-2"></i><span class="fs-4 d-none d-sm-inline">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div data-bs-theme="dark" class="btn-group border align-self-start align-self-center" dropdown [dropup]="isDropup" placement="bottom right">
+
+        <button id="button-split" type="button" dropdownToggle class="btn  dropdown-toggle dropdown-toggle-split "
+            aria-controls="dropdown-split">
+            <span class="caret"></span>
+            <span class="sr-only visually-hidden">Split button!</span>
+        </button>
+        <button type="button" class="btn ">{{name}}</button>
+        <ul id="dropdown-split" *dropdownMenu class="dropdown-menu dropdown-menu-left" role="menu"
+            aria-labelledby="button-split">
+            <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
+            <li role="menuitem">
+                <a class="dropdown-item" href="#">Another action</a>
+            </li>
+            <li role="menuitem">
+                <a class="dropdown-item" href="#">Something else here</a>
+            </li>
+            <li class="divider dropdown-divider d-none d-sm-block"></li>
+            <li role="menuitem">
+                <a class="dropdown-item" href="#">Separated link</a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="p-0 m-0 " *ngIf="role == 'Admin'">
+    <!-- Card Section -->
+    <div class="row m-2 justify-content-center">
+        <ng-container *ngFor="let i of [1, 2, 3]">
+            <div class="col-12 col-sm-8 col-md-4 col-lg-2 m-2">
+                <div class="card p-3 fs-5" data-bs-theme="dark">
+                    <div class="card-body text-center text-sm-start text-md-center">
+                        <i class="fa fa-user"></i>
+                        <h5 class="card-title">Total Instructors Number</h5>
+                        <p class="card-text">{{ users.length }}</p>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- Table Section -->
+    <div class="row m-2">
+        <div class="table-responsive col-12">
+            <table class="table table-hover">
+                <!-- Table Header -->
+                <thead>
+                    <tr class="table-dark text-center">
+                        <th class="">ID</th>
+                        <th class="">Name</th>
+                        <th class="">Email</th>
+                    </tr>
+                </thead>
+                <!-- Table Body -->
+                <tbody >
+                    <tr class="text-center table-secondary table-hover" *ngFor="let user of users">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

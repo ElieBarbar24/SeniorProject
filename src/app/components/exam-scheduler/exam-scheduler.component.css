@@ -1,0 +1,8 @@
+.scheduler-form{
+    border-radius: 13px;
+}
+
+.table-responsive{
+    max-height: 400px; 
+    overflow-y: auto;
+}

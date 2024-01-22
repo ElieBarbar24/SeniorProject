@@ -1,0 +1,100 @@
+
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <!----------------------- Login Container -------------------------->
+
+  <div class="row border rounded-5 p-3 bg-white shadow box-area">
+    <!--------------------------- Left Box ----------------------------->
+
+    <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box bg-dark">
+      <div class="featured-image mb-3">
+        <img src="https://liu.edu.lb/NewLIU2022/common/images/logo.png" class="img-fluid" style="width: 250px" />
+      </div>
+      <p class="text-white fs-2 text-center" style="font-family: 'Courier New', Courier, monospace; font-weight: 600">
+        LIU Exam Monitoring Scheduler
+      </p>
+    </div>
+
+    <!-------------------- ------ Right Box ---------------------------->
+
+    <div class="col-md-6 right-box">
+      <div class="row align-items-center">
+        <div class="header-text mb-4">
+          <h2>Register</h2>
+          <p>We are happy to have you back.</p>
+        </div>
+        <form [formGroup]="registerForm">
+          <div class="input-group mb-3">
+            <input type="text" class="form-control form-control-lg bg-light fs-6" placeholder="Name" [class.error]="
+                registerForm.controls['name'].dirty &&
+                registerForm.hasError('required', 'name')
+              " formControlName="name" name="name" required />
+            <small *ngIf="
+                registerForm.controls['name'].dirty &&
+                registerForm.hasError('required', 'name')
+              " class="text-danger m-2 col-md-12">Name is required</small>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="email" class="form-control form-control-lg bg-light fs-6" [class.error]="
+                registerForm.controls['email'].dirty &&
+                registerForm.hasError('required', 'email')
+              " placeholder="Email address" formControlName="email" name="email" required />
+            <small *ngIf="
+                registerForm.controls['email'].dirty &&
+                registerForm.hasError('email', 'email')
+              " class="text-danger m-2 col-md-12">Invalid email format.</small>
+            <small *ngIf="
+                registerForm.controls['email'].dirty &&
+                registerForm.hasError('required', 'email')
+              " class="text-danger m-2 col-md-12">Email is required</small>
+          </div>
+
+          <div class="input-group mb-1">
+            <input type="password" class="form-control form-control-lg bg-light fs-6" placeholder="Password"
+              [class.error]="
+                registerForm.controls['password'].dirty &&
+                registerForm.hasError('required', 'password')
+              " formControlName="password" name="password" required />
+            <small *ngIf="
+                registerForm.controls['password'].dirty &&
+                registerForm.hasError('required', 'password')
+              " class="text-danger m-2 col-md-12">Password is required</small>
+            <small class="text-danger m-2 col-md-12">
+
+                <li *ngIf="
+                    registerForm.controls['password'].dirty &&
+                    registerForm.hasError('minlength', 'password')
+                  ">
+                  password must be at least 8 characters.
+                </li>
+                <li *ngIf="
+                registerForm.controls['password'].dirty &&
+                registerForm.hasError('specialCharRequirement', 'password')
+              ">1 special Character needed</li>
+
+                <li *ngIf="
+                registerForm.controls['password'].dirty &&
+                registerForm.hasError('LowercaseCaseRequirement', 'password')
+              ">1 Lower Case Character needed</li>
+
+                <li *ngIf="
+                registerForm.controls['password'].dirty &&
+                registerForm.hasError('upperCaseRequirement', 'password')
+              ">1 Upper Case Character needed</li>
+            </small>
+          </div>
+          <div class="input-group mb-3 pt-5">
+            <button (click)="onSubmit()" [disabled]="isDisabled" type="submit" class="bg-dark btn btn-lg btn-primary w-100 fs-6">
+              Register
+            </button>
+          </div>
+          <div class="row">
+            <small>Already Have An Account?
+              <a id="forget" href="" routerLink="/login">Login</a></small>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
