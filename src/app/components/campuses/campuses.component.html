@@ -1,0 +1,61 @@
+<div class="container-fluid">
+    <div class="p-4 row">
+        <div class="col-sm-12 col-md-6 pt-4">
+            <div class="bg-dark p-4 rounded-4" >
+                <div class="row g-3 text-white">
+                    <h4>Enter Campuses Manualy one by one</h4>
+                    <div class="col">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Campus Name" aria-label="Username"
+                                aria-describedby="addon-wrapping" />
+                            
+                        </div>
+                        
+                    </div>
+                    <div class="btn text-start">
+                        <button class="btn btn-secondary " type="button" id="button-addon2">
+                            Save Campus
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 pt-4" *ngIf="dbcampuses.length === 0">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white">
+                    <h4>Enter Campuses Manualy one by one</h4>
+                    <div class="input-group">
+                        <input type="file" class="form-control" data-bs-theme="dark" id="inputGroupFile04"
+                            aria-describedby="inputGroupFileAddon04" aria-label="Upload" (change)="readCampuses($event)"/>
+                        <button class="btn btn-secondary" type="button" id="inputGroupFileAddon04" (click)="uploadExcelCampusesData()">
+                            Upload Campuses
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="p-4">
+        <div class="bg-dark rounded-4">
+            <div class="p-4">
+                <table class="table table-hover" data-bs-theme="dark">
+                    <thead>
+                        <tr>
+                          <th scope="col">Campus ID</th>
+                          <th scope="col">Campus Name</th>
+                          <th scope="col" *ngIf="role == 'SuperAdmin'" >Edit</th>
+                        </tr>
+                      </thead>
+                      <tbody >
+                        <tr *ngFor="let campus of dbcampuses" class="text-white">
+                            <td>{{campus.id}}</td>
+                            <td>{{campus.campusesName}}</td>
+                            <td *ngIf="role == 'SuperAdmin'"><a class="edit-icon"><i class="fa fa-edit"></i></a></td>
+                        </tr>
+                      </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>

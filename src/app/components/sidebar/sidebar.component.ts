@@ -13,8 +13,11 @@ export class SidebarComponent implements OnInit{
   isDropup = true;
   navData = [
     {routeLink:'admin',icon:'fa fa-home',label:'Dashboard'},
-    {routeLink:'scheduler',icon:'fa-solid fa-calendar-days',label:'Scheduler'}
-  
+    {routeLink:'information',icon:'fa-solid fa-calendar-days',label:'Information'},
+    {routeLink:'scheduler',icon:'fa-solid fa-calendar-days',label:'Scheduler'},
+    {routeLink:'instructors',icon:'fa-solid fa-calendar-days',label:'Instructors'},
+    {routeLink:'course',icon:'fa-solid fa-calendar-days',label:'Courses/Sections'},
+    {routeLink:'room',icon:'fa-solid fa-calendar-days',label:'Rooms'},
   ]
   activeLink:string;
   @Input() name:string | undefined;
@@ -35,6 +38,7 @@ export class SidebarComponent implements OnInit{
     this.activeLinkService.setActiveLink(route);
     this.router.navigate(['DashBoard', route]);
   }
+  
   Logout(){
     this.auth.signOut();
   }

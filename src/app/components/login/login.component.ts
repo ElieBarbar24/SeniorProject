@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { UserStoreService } from '../../services/user-store.service';
+import { ActiveLinkServiceService } from '../../services/active-link-service.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private routes: Router,
     private toast: NgToastService,
-    private userStore:UserStoreService
+    private userStore:UserStoreService,
+    private activeLink:ActiveLinkServiceService
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class LoginComponent implements OnInit {
           this.isDisabled = false;
           this.auth.storeToken(res.accessToken);
           this.auth.storeRefreshToken(res.refreshToken);
-
+          this.activeLink.setActiveLink('admin');
           let tokenPayLoad = this.auth.decodeToken();
           this.userStore.setName(tokenPayLoad.name);
           this.userStore.setRole(tokenPayLoad.role);

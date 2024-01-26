@@ -15,8 +15,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminComponent } from './components/admin/admin.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
-import { ExamSchedulerComponent } from './components/exam-scheduler/exam-scheduler.component'
+import { ExamSchedulerComponent } from './components/SectionAndCoursesUploader/exam-scheduler.component'
 import { ActiveLinkServiceService } from './services/active-link-service.service';
+import { RoomsComponent } from './components/rooms/rooms.component';
+import { CoursesComponent } from './components/courses/courses.component';
+import { InstructorsComponent } from './components/instructors/instructors.component';
+import { InformationComponent } from './components/information/information.component';
+
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { CampusesComponent } from './components/campuses/campuses.component';
+import { SchoolsComponent } from './components/schools/schools.component';
+import { DepartmentsComponent } from './components/departments/departments.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +38,13 @@ import { ActiveLinkServiceService } from './services/active-link-service.service
     SidebarComponent,
     AdminComponent,
     ExamSchedulerComponent,
+    RoomsComponent,
+    CoursesComponent,
+    InstructorsComponent,
+    InformationComponent,
+    CampusesComponent,
+    SchoolsComponent,
+    DepartmentsComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +54,8 @@ import { ActiveLinkServiceService } from './services/active-link-service.service
     NgToastModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
+    AlertModule.forRoot(),
+    TabsModule.forRoot(),
   ],
   providers: [{
     provide:HTTP_INTERCEPTORS,
