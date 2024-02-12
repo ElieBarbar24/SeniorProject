@@ -1,0 +1,25 @@
+.first-page:hover{
+    cursor: pointer;
+    background-color: #dc3545;
+    color: white;
+}
+
+.prev-page:hover{
+    cursor: pointer;
+    background-color: #dc3545;
+    color: white;
+}
+
+.page:hover{
+    cursor: pointer;
+}
+
+.edit-icon{
+    color: white;
+    transition: 0.2s;
+}
+
+.edit-icon:hover{
+    color: #dc3545;
+    cursor: pointer;
+}

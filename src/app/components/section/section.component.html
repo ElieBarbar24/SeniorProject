@@ -1,0 +1,121 @@
+<div class="container-fluid">
+    <div class="p-2 row" *ngIf="allowedRoles.includes(role)">
+        <div class="col-sm-12 col-md-6">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white">
+                    <h4>Enter Sections Excel File</h4>
+                    <div class="input-group" data-bs-theme="dark">
+                        <div class="col-12 p-2">
+                            <h5>Select Semestre</h5>
+
+                            <select [(ngModel)]="selectedSemestre" class="form-select "
+                                aria-label="Default select example">
+                                <option value="" selected disabled>Choose Semestre</option>
+                                <option value="Fall">Fall</option>
+                                <option value="Spring">Spring</option>
+                                <option value="Summer">Summer</option>
+                            </select>
+                        </div>
+                        <div class="col-12 p-2">
+                            <h5>Select Academic Year</h5>
+
+                            <input [(ngModel)]="academicYear" type="text" class=" form-control text-white"
+                                placeholder="Please Put The Academic Year ex:YYYY-YYYY" pattern="\d{4}-\d{4}">
+                        </div>
+
+                        <div class="col-12 p-2">
+                            <input (change)="readSectionsFromExcel($event)" type="file" id="inputGroupFile04"
+                                aria-describedby="inputGroupFileAddon04" aria-label="Upload" class="form-control">
+                        </div>
+                        <div class="col-12 p-2">
+                            <button class="btn text-white btn-secondary" (click)="uploadSections()" type="button"
+                                id="inputGroupFileAddon04">Upload
+                                Sections</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 pt-4 pt-sm-4 pt-md-0">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white">
+                    <h4>Enter Section Details</h4>
+                    <div class="input-group" data-bs-theme="dark">
+                        <input type="text" id="inputGroupFile03" aria-describedby="inputGroupFileAddon04"
+                            aria-label="Upload" placeholder="Enter Course" class="form-control text-white">
+                        <button class="btn text-white btn-secondary" type="button"
+                            id="inputGroupFileAddon04">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-2 row">
+        <div class="bg-dark rounded-4 ">
+            <div class="p-4 m-4 table-responsive ">
+                <h3 class="text-white p-2">Full Section Data</h3>
+                <table class="table table-hover" id="rooms" data-bs-theme="dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Section</th>
+                            <th scope="col">Room</th>
+                            <th scope="col">NB</th>
+                            <th scope="col">Schedule</th>
+                            <th scope="col">Instructor</th>
+                            <th scope="col">Semestre</th>
+                            <th scope="col">Acdemic Year</th>
+
+                            <th scope="col" *ngIf="role=='SuperAdmin'||role=='Admin'">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of dbSections |slice:currentPage.min:currentPage.max , OrderBy:''">
+                            <tr class="text-white" >
+                                <td>{{item.id}}</td>
+                                <td [ngClass]="{'bg-danger':item.course==null}" >{{item.course!=null?item.course.code:"Course of this section not found! upload it and come edit this section"}}</td>
+                                <td  [ngClass]="{'bg-danger':item.course==null}">{{item.course!=null?item.course.title:"Course of this section not found! upload it and come edit this section"}}</td>
+                                <td >{{item.section}}</td>
+                                <td  [ngClass]="{'bg-danger':item.room==null}">{{item.room!=null?item.room.roomNum:"Room of this section not found! uploadit and come edit this section"}}</td>
+                                <td>{{item.nb}}</td>
+                                <td>{{item.schedule}}</td>
+                                <td  [ngClass]="{'bg-danger':item.instructor==null}">{{item.instructor!=null?item.instructor.username:"Instructor of this section not found! upload it and come edit this section"}}</td>
+                                <td>{{item.semester}}</td>
+                                <td>{{item.academicYear}}</td>
+                                <td *ngIf="role=='SuperAdmin'||role=='Admin'"><i class="edit-icon fa fa-edit "></i></td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example" data-bs-theme="dark">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item ">
+                            <a class="page-link user-select-none first-page"
+                                [ngClass]="{'disabled':currentPageIndex==1}" (click)="firstPage()">First</a>
+                        </li>
+                        <li class="page-item ">
+                            <a class="page-link user-select-none prev-page" [ngClass]="{'disabled':currentPageIndex==1}"
+                                (click)="prevPage()">Previous</a>
+                        </li>
+                        <li class="page-item" *ngFor="let i of currentthreePage">
+                            <a class="page-link user-select-none page" (click)="indexedPage(i)"
+                                [ngClass]="{'active':currentPageIndex==i}">{{i}}</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link user-select-none page"
+                                [ngClass]="{'disabled':currentPage.max==tablePages[tablePages.length-1].max}"
+                                (click)="nextPage()">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link user-select-none page"
+                                [ngClass]="{'disabled':currentPage.max==tablePages[tablePages.length-1].max}"
+                                (click)="lastPage()">Last</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

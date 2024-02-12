@@ -1,4 +1,4 @@
 export class Campuses{
-    Id:number|undefined;
+    Id:any|undefined;
     campusesName:string|undefined;
 }

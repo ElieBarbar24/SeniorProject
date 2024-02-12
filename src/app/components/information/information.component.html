@@ -1,21 +1,14 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary m-0 pt-0" data-bs-theme="dark">
-    <div class="container-fluid fs-4">
-        <a class="navbar-brand fs-3" href="#">Information</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item" *ngFor="let route of navData">
-                    <a (click)="navigateTo(route.routLink)" class="nav-link active" aria-current="page" [ngClass]="{'active':activeLink == route.routLink,'nav-item-hover':activeLink != route.routLink}"
-                        href="#">{{route.label}}</a>
-                </li>
-            </ul>
+<div class="container-fluid">
+    <div class="m-4 row">
+        <div class="col-sm-12 col-md-4 p-4 campuses">
+            <app-campuses></app-campuses>
+        </div>
+        <div class="col-sm-12 col-md-4 p-4 schools">
+            <app-schools></app-schools>
+        </div>
+        <!-- Departments -->
+        <div class="col-sm-12 col-md-4 p-4 departments">
+            <app-departments></app-departments>
         </div>
     </div>
-</nav>
-
-<div class="p-0 m-0">
-    <router-outlet></router-outlet>
 </div>

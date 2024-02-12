@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <div class="p-2 row">
+        <div class="col-sm-12">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white">
+                    <h4>Create New User</h4>
+                    <div class="input-group" data-bs-theme="dark">
+                        <div class="col-12 col-md-6 p-2">
+                            <label class="form-label">User Name</label>
+                            <input type="text" [(ngModel)]="newUserName" class="form-control" placeholder="User Name">
+                        </div>
+                        <div class="col-12 col-md-6 p-2">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" [(ngModel)]="newUserEmail" placeholder="Email">
+                        </div>
+                        <div class="col-12 p-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isActive">
+                                <label class="form-check-label">isActive</label>
+                            </div>
+                            
+                        </div>
+                        <div class="col-12 p-2">
+                            <select class="form-select form-select-lg" [(ngModel)]="newUserRole">
+                                <option value="" disabled hidden selected>Choose Role</option>
+                                <ng-container *ngFor="let r of dbRoles">
+                                    <option  value="{{r.id}}" *ngIf="r.role !== 'SuperAdmin'">{{r.role}}</option>
+                                </ng-container>
+                            </select>
+                        </div>
+                        <div class="p-2">
+                            <button class="btn btn-secondary" (click)="onSubmit()" type="submit">Create new User</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,7 +14,7 @@ export class ExamSchedulerComponent {
   Courses: any[] = [];
   Rooms: any[] = [];
   Instructors: any[] = [];
-  toastDuration: number = 2500;
+  toastDuration: number = 5000;
 
 
   constructor(private api: ApiService, private excel: ExcelService, private toast: NgToastService) { }
@@ -22,18 +22,16 @@ export class ExamSchedulerComponent {
 
   createAPICourses(courses: any): Course[] {
     var newCourses: Course[] = [];
-    for (let course of courses) {
-      var newCourse: Course = new Course();
+    // for (let course of courses) {
+    //   var newCourse: Course = new Course();
 
-      newCourse.code = course['Code'];
-      newCourse.title = course['Title'];
-      newCourse.credits = course['Credits'];
-      newCourse.coreRequesites = course['Co-requisites'];
-      newCourse.preRequesites = course['Pre-requisites'];
-      newCourse.school = course['School'];
-      console.log(newCourse);
-      newCourses.push(newCourse);
-    }
+    //   newCourse.code = course['Code'];
+    //   newCourse.title = course['Title'];
+    //   newCourse.Credits = course['Credits'];
+    //   newCourse.coreRequesites = course['Co-requisites'];
+    //   newCourse.preRequesites = course['Pre-requisites'];
+    //   newCourses.push(newCourse);
+    // }
     return newCourses;
   }
 
@@ -51,7 +49,7 @@ export class ExamSchedulerComponent {
     var newCourses: Course[] = this.createAPICourses(this.Courses);
     newCourses = newCourses.slice(1);
 
-    this.api.setClasses(newCourses).subscribe({
+    this.api.setCourses(newCourses).subscribe({
       next: (res) => {
         this.toast.success({ detail: "Succes", summary: "Courses uploaded successfully", duration: this.toastDuration })
       },

@@ -1,0 +1,18 @@
+/* .scrollable-table {
+    max-height: 800px;
+    overflow-y: auto;
+} */
+
+.edit-icon{
+    color: white;
+    transition: 0.2s;
+}
+
+.edit-icon:hover{
+    color: #dc3545;
+    cursor: pointer;
+}
+
+.blur{
+    filter: blur(px);
+}

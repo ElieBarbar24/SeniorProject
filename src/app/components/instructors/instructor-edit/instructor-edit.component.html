@@ -1,0 +1,63 @@
+<div class="container-fluid align-content-center justify-content-center d-flex w-auto m-0 p-0" data-bs-theme="dark">
+    <div class="bg-dark">
+        <h1 class="text-danger m-4">Edit Instructor</h1>
+        <div class="row g-3 m-4 text-white">
+            <div class="col-md-4">
+                <label class="form-label">First Name</label>
+                <input [(ngModel)]="fname" type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Mid Name</label>
+                <input [(ngModel)]="mname" type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Last Name</label>
+                <input [(ngModel)]="lname" type="text" class="form-control">
+            </div>
+            <div class="col-6">
+                <label for="inputAddress" class="form-label">Title</label>
+                <input [(ngModel)]="title" type="text" class="form-control" id="inputAddress"
+                    placeholder="">
+            </div>
+            <div class="col-6">
+                <label for="inputAddress2" class="form-label">Email</label>
+                <input [(ngModel)]="email" type="text" class="form-control" id="inputAddress2"
+                    placeholder="Email">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Current School:{{data.instructor.schoolName}}</label>
+                <select [(ngModel)]="selectedSchool" class="form-select">
+                    <option value="" selected disabled hidden>Choose School</option>
+                    <ng-container *ngFor="let item of dbSchools">
+                        <option value="{{item.schoolName}}">
+                            {{item.schoolName}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Current Department:{{data.instructor.dep}}</label>
+                <select [(ngModel)]="selectedDepartement" class="form-select">
+                    <option value="" selected disabled hidden>Choose Departement</option>
+                    <ng-container *ngFor="let item of getSelectedSchoolDepartments()">
+                        <option value="{{item.departmentId}}">
+                            {{item.departmentName}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Current Campus:{{data.instructor.campusName}}</label>
+                <select [(ngModel)]="selectedCampus" class="form-select">
+                    <option value="" selected disabled hidden>Campus</option>
+                    <ng-container *ngFor="let item of dbCampuses">
+                        <option value="{{item.campusesName}}">
+                            {{item.campusesName}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" (click)="onSave()" class="btn me-2 btn-secondary">Update Instructor</button>
+                <button type="submit" (click)="onClose()" class="btn btn-danger">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

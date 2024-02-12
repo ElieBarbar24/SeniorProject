@@ -9,27 +9,25 @@ import { ActiveLinkServiceService } from '../../services/active-link-service.ser
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
-export class SidebarComponent implements OnInit{
-  isDropup = true;
-  navData = [
-    {routeLink:'admin',icon:'fa fa-home',label:'Dashboard'},
-    {routeLink:'information',icon:'fa-solid fa-calendar-days',label:'Information'},
-    {routeLink:'scheduler',icon:'fa-solid fa-calendar-days',label:'Scheduler'},
-    {routeLink:'instructors',icon:'fa-solid fa-calendar-days',label:'Instructors'},
-    {routeLink:'course',icon:'fa-solid fa-calendar-days',label:'Courses/Sections'},
-    {routeLink:'room',icon:'fa-solid fa-calendar-days',label:'Rooms'},
-  ]
-  activeLink:string;
-  @Input() name:string | undefined;
-  @Input() role:string | undefined;
+export class SidebarComponent {
 
-  constructor(private router: Router,private auth:AuthService,private activeLinkService:ActiveLinkServiceService) {
-      const storedLink = this.activeLinkService.getActiveLink();
-      this.activeLink = storedLink||'';
-      this.navigateTo(this.activeLink);
-  }
+  navigationItems = [
+    { label: 'Schedule', iconClass: 'fa-solid fa-calendar-days', route: 'Schedule', roles: ['SuperAdmin', 'Admin','Proctor'] },
+    { label: 'Information', iconClass: 'fa-solid fa-location-dot', route: 'Information', roles: ['SuperAdmin', 'Admin','Proctor']  },
+    { label: 'Instructors', iconClass: 'fa-solid fa-chalkboard-user', route: 'Instructors', roles: ['SuperAdmin', 'Admin','Proctor']  },
+    { label: 'Course', iconClass: 'fa-solid fa-book', route: 'Course', roles: ['SuperAdmin', 'Admin','Proctor']  },
+    { label: 'Room', iconClass: 'fa-solid fa-table-cells-large', route: 'Room', roles: ['SuperAdmin', 'Admin','Proctor'] },
+    { label: 'Section', iconClass: 'fa-solid fa-hourglass', route: 'Section', roles: ['SuperAdmin', 'Admin','Proctor']  },
+    { label: 'Admins', iconClass: 'fa-solid fa-shield', route: 'Admins', roles: ['SuperAdmin', 'Admin'] },
+  ];
 
-  ngOnInit(): void {
+  activeLink!: string;
+  @Input() name: string | undefined;
+  @Input() role: string | undefined;
+
+  constructor(private router: Router, private auth: AuthService, private activeLinkService: ActiveLinkServiceService) {
+    const storedLink = this.activeLinkService.getActiveLink();
+    this.activeLink = storedLink || '';
     this.navigateTo(this.activeLink);
   }
 
@@ -38,8 +36,8 @@ export class SidebarComponent implements OnInit{
     this.activeLinkService.setActiveLink(route);
     this.router.navigate(['DashBoard', route]);
   }
-  
-  Logout(){
+
+  Logout() {
     this.auth.signOut();
   }
 

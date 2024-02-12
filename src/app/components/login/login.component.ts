@@ -18,7 +18,7 @@ import { ActiveLinkServiceService } from '../../services/active-link-service.ser
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
-  toastDuration: number = 2500;
+  toastDuration: number = 5000;
   isDisabled: boolean = false;
   loginForm!: FormGroup;
   constructor(
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
           this.isDisabled = false;
           this.auth.storeToken(res.accessToken);
           this.auth.storeRefreshToken(res.refreshToken);
-          this.activeLink.setActiveLink('admin');
+          this.activeLink.setActiveLink('Schedule');
           let tokenPayLoad = this.auth.decodeToken();
           this.userStore.setName(tokenPayLoad.name);
           this.userStore.setRole(tokenPayLoad.role);

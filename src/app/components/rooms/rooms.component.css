@@ -1,0 +1,18 @@
+.next-page:hover{
+    cursor: pointer;
+}
+
+.prev-page{
+    cursor: pointer;
+    background-color: #dc3545;
+    color: white;
+}
+
+.edit:hover{
+    color: #dc3545;
+    cursor: pointer;
+}
+
+.edit{
+    transition: 0.2s;
+}
