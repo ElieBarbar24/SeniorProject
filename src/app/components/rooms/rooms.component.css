@@ -1,11 +1,9 @@
-.next-page:hover{
+.page{
     cursor: pointer;
 }
 
 .prev-page{
     cursor: pointer;
-    background-color: #dc3545;
-    color: white;
 }
 
 .edit:hover{

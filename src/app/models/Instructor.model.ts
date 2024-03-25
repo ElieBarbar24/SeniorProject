@@ -1,6 +1,6 @@
 import { Departement } from "./Departement.model";
 
-export class Instructor{
+export class InstructorRequest{
     fname:string|undefined;
     mname:string|undefined;
     lname:string|undefined;

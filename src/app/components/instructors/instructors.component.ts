@@ -6,7 +6,7 @@ import { UserStoreService } from '../../services/user-store.service';
 import { AuthService } from '../../services/auth.service';
 import { School } from '../../models/School.model';
 import { Departement } from '../../models/Departement.model';
-import { Instructor } from '../../models/Instructor.model';
+import { InstructorRequest } from '../../models/Instructor.model';
 import { ImportInstructorsRequest, InstructorsCampuses } from '../../models/CampusInstructors.model';
 import { Router } from '@angular/router';
 import { ActiveLinkServiceService } from '../../services/active-link-service.service';
@@ -90,11 +90,11 @@ export class InstructorsComponent implements OnInit {
     }
   }
 
-  createAPIData(): Instructor[] {
-    var instructors: Instructor[] = [];
+  createAPIData(): InstructorRequest[] {
+    var instructors: InstructorRequest[] = [];
 
     for (let i of this.ExcelInstructors) {
-      var inst: Instructor = new Instructor();
+      var inst: InstructorRequest = new InstructorRequest();
       inst.fname = i['fname'];
       inst.mname = i['mname'];
       inst.lname = i['lname'];
@@ -107,7 +107,7 @@ export class InstructorsComponent implements OnInit {
       instructors.push(inst);
     }
     instructors = instructors.slice(1);
-
+    console.log(instructors);
     return instructors;
   }
 
@@ -129,7 +129,7 @@ export class InstructorsComponent implements OnInit {
 
   uploadInstructors() {
 
-    var instructors: Instructor[] = this.createAPIData();
+    var instructors: InstructorRequest[] = this.createAPIData();
 
     if (instructors.length == 0) {
       this.toast.error({ detail: "ERROR", summary: "You Need To upload The Instructos Excel File first", duration: this.toastDuration })
@@ -138,6 +138,7 @@ export class InstructorsComponent implements OnInit {
     this.api.setInstructors(instructors).subscribe({
       next: (res) => {
         this.getInstructorsFullData();
+        console.log(res);
         this.toast.success({ detail: "Succes", summary: "Schools,Departments,Courses uploaded successfully", duration: this.toastDuration })
       },
       error: (err) => {

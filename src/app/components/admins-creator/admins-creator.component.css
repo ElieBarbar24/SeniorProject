@@ -1,0 +1,9 @@
+.edit-icon{
+    color: white;
+    transition: 0.2s;
+}
+
+.edit-icon:hover{
+    color: #dc3545;
+    cursor: pointer;
+}

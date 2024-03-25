@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 
 import { MatDialogRef } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Instructor } from '../../../models/Instructor.model';
+import { InstructorRequest } from '../../../models/Instructor.model';
 import { ApiService } from '../../../services/api.service';
 
 @Component({

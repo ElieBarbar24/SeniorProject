@@ -33,63 +33,10 @@ export class CampusesComponent implements OnInit{
     });
   }
 
-  readCampuses(event:any):void{
-    const file = event.target.files[0];
-
-    if(file){
-      const validExtensions = ['.xls', '.xlsx'];
-      const fileName = file.name.toLowerCase();
-      const isValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
-
-      if (!isValidExtension) {
-        this.toast.error({ detail: "ERROR", summary: "Invalid file type. Please select an Excel file.", duration: this.toastDuration });
-        const fileInput = event.target as HTMLInputElement;
-        fileInput.value = '';
-        return;
-      }
-
-
-      this.excel.excelToArray(file).then((data)=>{
-        
-        var check = this.CampusesFileFormatValidator(data);
-        
-        if (!check) {
-          this.toast.error({ detail: "ERROR", summary: "Invalid Excel Format for Campuses.", duration: this.toastDuration });
-          const fileInput = event.target as HTMLInputElement;
-          fileInput.value = '';
-          return;
-        }
-
-        this.campuses = data
-      });
-    }
-  }
-
-  CampusesFileFormatValidator(campuses: any): boolean {
-    var titles: any = campuses[0];
-    var fileTitles: any = ['CampusId', 'Campus']
-    for (let t of Object.keys(titles)) {
-      if (!fileTitles.includes(t)) {
-        return false;
-      }
-    }
-    return true
-  }
-
-  createAPICampuses():Campuses[]{
-    var newCampuses: Campuses[]=[]
-    for(let campus of this.campuses){
-      var newCampuse:Campuses = new Campuses();
-      newCampuse.campusesName = campus['Campus'];
-
-      newCampuses.push(newCampuse);
-    }
-    return newCampuses;
-  }
-
   uploadOneCampus(){
     if(this.campusName==""){
       this.toast.error({ detail: "ERROR", summary: "Make sure to write the campus name before uploading it", duration: this.toastDuration });
+      return;
     }
     this.campusName = this.campusName.charAt(0).toUpperCase() + this.campusName.slice(1).toLowerCase();
     var campuses:Campuses[] = [];
@@ -109,22 +56,6 @@ export class CampusesComponent implements OnInit{
     })
 
     this.campusName = "";
-  }
-
-  uploadExcelCampusesData(){
-    var campuses:Campuses[] = this.createAPICampuses();
-    campuses = campuses.slice(1);
-    this.api.setCampuses(campuses).subscribe({
-      next:(res)=>{
-        this.toast.success({ detail: "Success", summary: "Campuses uploaded successfully", duration: this.toastDuration });
-        this.getCampuse();
-      },
-      error:(res)=>{
-        this.toast.error({ detail: "ERROR", summary: "Error occured during uploading Campuses", duration: this.toastDuration });
-      }
-    });
-
-    this.getCampuse();
   }
 
   getCampuse(){

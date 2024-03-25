@@ -1,11 +1,11 @@
 <div class="row g-3 text-white bg-dark mt-4 rounded-4 p-2" *ngIf="allowedRoles.includes(role)">
     <h5>Enter School Manualy</h5>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="School Name" aria-label="Username"
+        <input type="text" class="form-control" [(ngModel)]="newSchool" placeholder="School Name" aria-label="Username"
             aria-describedby="addon-wrapping" />
     </div>
     <div class="p-2 text-start">
-        <button class="btn btn-secondary " type="button" id="button-addon2">
+        <button class="btn btn-secondary " (click)="insertOneSchool()" type="button" id="button-addon2">
             Save School
         </button>
     </div>

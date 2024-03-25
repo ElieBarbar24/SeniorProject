@@ -18,22 +18,108 @@
                                 <input class="form-check-input" type="checkbox" role="switch" [(ngModel)]="isActive">
                                 <label class="form-check-label">isActive</label>
                             </div>
-                            
+
                         </div>
                         <div class="col-12 p-2">
                             <select class="form-select form-select-lg" [(ngModel)]="newUserRole">
                                 <option value="" disabled hidden selected>Choose Role</option>
                                 <ng-container *ngFor="let r of dbRoles">
-                                    <option  value="{{r.id}}" *ngIf="r.role !== 'SuperAdmin'">{{r.role}}</option>
+                                    <option value="{{r.id}}" *ngIf="r.role !== 'SuperAdmin'">{{r.role}}</option>
                                 </ng-container>
                             </select>
                         </div>
                         <div class="p-2">
-                            <button class="btn btn-secondary" (click)="onSubmit()" type="submit">Create new User</button>
+                            <button class="btn btn-secondary" (click)="onSubmit()" type="submit">Create new
+                                User</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="bg-dark p-4 mt-4 rounded-4">
+            <div class="row table-responsive">
+                <div class="col-12">
+                    <table class="table table-hover " data-bs-theme="dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">isActive</th>
+                                <th scope="col">isActive</th>
+                                <th scope="col" *ngIf="role == 'SuperAdmin' || role=='Admin'">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let u of dbUsers | slice:userPages.currentPage.min:userPages.currentPage.max"
+                                class="text-white">
+                                <td>{{u.id}}</td>
+                                <td>{{u.name}}</td>
+                                <td>{{u.email}}</td>
+                                <td>{{u.isActive}}</td>
+                                <td>{{u.role.role}}</td>
+                                <td *ngIf="role == 'SuperAdmin' || role=='Admin'"><a class="edit-icon"
+                                        (click)="staticModal.show()"><i class="fa fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-12 justify-content-end">
+                    <nav aria-label="Page navigation example" data-bs-theme="dark">
+                        <ul class="pagination ">
+                            <li class="page-item">
+                                <a class="page-link user-select-none first-page"
+                                    [ngClass]="{ disabled: this.userPages.currentPageIndex == 1 }"
+                                    (click)="this.userPages.firstPage()">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link user-select-none prev-page"
+                                    [ngClass]="{ 'disabled': this.userPages.currentPageIndex == 1 }"
+                                    (click)="this.userPages.prevPage()">Previous</a>
+                            </li>
+                            <li class="page-item" *ngFor="let i of this.userPages.currentthreePage">
+                                <a class="page-link user-select-none page" (click)="this.userPages.indexedPage(i)"
+                                    [ngClass]="{ 'active': this.userPages.currentPageIndex == i }">{{ i }}</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link user-select-none page"
+                                    [ngClass]="{'disabled':this.userPages.currentPage.max == this.userPages.tablePages[this.userPages.tablePages.length - 1].max}"
+                                    (click)="this.userPages.nextPage()">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link user-select-none page"
+                                    [ngClass]="{'disabled':this.userPages.currentPage.max == this.userPages.tablePages[this.userPages.tablePages.length - 1].max}"
+                                    (click)="this.userPages.lastPage()">Last</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
+    <div class="modal fade dark" bsModal data-bs-theme="dark" #staticModal="bs-modal" [config]="{backdrop: 'static'}"
+        tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="dialog-static-name" class="modal-title pull-left text-white">Confirmation Modal</h4>
+                    <button type="button" class="btn-close close pull-right" aria-label="Close"
+                        (click)="staticModal.hide()">
+                        <span aria-hidden="true" class="visually-hidden">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-white">This is a confirmation modal. Please confirm or cancel the action.</p>
+                    <!-- Description Text -->
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="staticModal.hide()">Cancel</button>
+                        <button type="button" class="btn btn-primary" (click)="onConfirm()">Confirm</button>
+                    </div>
+                    <!-- Confirm and Cancel Buttons -->
+                </div>
+            </div>
+        </div>
+    </div>

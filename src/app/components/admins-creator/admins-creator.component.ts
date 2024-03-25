@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { NgToastService } from 'ng-angular-popup';
 import { UserStoreService } from '../../services/user-store.service';
 import { AuthService } from '../../services/auth.service';
 import { CreateUserRequestForm } from '../../models/User.model';
+import { Pagination } from '../../models/Pagination.model';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-admins-creator',
@@ -11,16 +13,19 @@ import { CreateUserRequestForm } from '../../models/User.model';
   styleUrl: './admins-creator.component.css'
 })
 export class AdminsCreatorComponent implements OnInit{
+  @ViewChild('staticModal') staticModal: ModalDirective|undefined;
   role!:string;
   isActive:boolean = false;
   dbRoles:any[] = [];
   dbUsers:any[] = []
-
+  userPages:Pagination = new Pagination();
   toastDuration:number = 5000;
 
   newUserRole:string = '';
   newUserName:string = '';
   newUserEmail:string = '';
+
+  ConfirmationDescription:string = '';
   constructor(private api:ApiService,private toast:NgToastService,private userStore:UserStoreService,private auth:AuthService){}
 
 
@@ -48,6 +53,7 @@ export class AdminsCreatorComponent implements OnInit{
       next:(data)=>{
         this.dbUsers = data;
         console.log(this.dbUsers);
+        this.userPages.genPages(this.dbUsers.length);
       }
     })
   }
@@ -73,6 +79,18 @@ export class AdminsCreatorComponent implements OnInit{
     user.roleID = this.newUserRole;
 
     return user;
+  }
+
+  onConfirm(){
+    if(this.staticModal){
+      this.staticModal.hide();
+    }
+  }
+
+  openConfirmation(){
+    if(this.staticModal){
+      this.staticModal.show();
+    }
   }
 
   submit(){

@@ -1,20 +1,20 @@
 <div class="row g-3 text-white bg-dark mt-4 rounded-4 p-2 " *ngIf="allowedRoles.includes(role)">
     <h5>Enter Departments Manualy</h5>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Department Name"
+        <input type="text" [(ngModel)]="newDepName" class="form-control" placeholder="Department Name"
             aria-label="Username" aria-describedby="addon-wrapping" />
     </div>
     <div class="p-2">
-        <select class="form-select" name="" id="">
-            <option selected hidden disabled>Select School</option>
-            <option value="">New Delhi</option>
-            <option value="">Istanbul</option>
-            <option value="">Jakarta</option>
+        <select class="form-select" [(ngModel)]="newDepSchoolId" name="" id="">
+            <option selected hidden disabled value="">Select School</option>
+            <ng-container *ngFor="let s of dbSchools">
+                <option value="{{s.schoolId}}">{{s.schoolName}}</option>
+            </ng-container>
         </select>
     </div>
 
     <div class="p-2 text-start">
-        <button class="btn btn-secondary " type="button" id="button-addon2">
+        <button class="btn btn-secondary" (click)="insertDepartment()" type="button" id="button-addon2">
             Save Department
         </button>
     </div>

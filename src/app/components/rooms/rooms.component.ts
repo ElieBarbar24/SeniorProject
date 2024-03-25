@@ -5,6 +5,7 @@ import { ExcelService } from '../../services/excel.service';
 import { Room } from '../../models/Room.model';
 import { UserStoreService } from '../../services/user-store.service';
 import { AuthService } from '../../services/auth.service';
+import { Pagination } from '../../models/Pagination.model';
 
 @Component({
   selector: 'app-rooms',
@@ -12,15 +13,13 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './rooms.component.css'
 })
 export class RoomsComponent implements OnInit{
-  dbRooms:any[] | undefined;
+  dbRooms:any[] = [];
   ExcelRooms:any[] = [];
 
   toastDuration: number = 5000;
 
   isCampusData:boolean = false;
-
-  tableMax:number;
-  talbeMin:number;
+  roomsPages:Pagination = new Pagination();
 
   roomType:string[] =[];
   selectedType: string = 'All Types';
@@ -34,10 +33,7 @@ export class RoomsComponent implements OnInit{
   allowedRoles:string[] = ['SuperAdmin','Admin'];
   role!:string;
 
-  constructor(private auth:AuthService,private userstore:UserStoreService,private toast:NgToastService,private api:ApiService,private excel:ExcelService){
-    this.tableMax=10;
-    this.talbeMin=0;
-  }
+  constructor(private auth:AuthService,private userstore:UserStoreService,private toast:NgToastService,private api:ApiService,private excel:ExcelService){}
 
   ngOnInit(): void {
     this.userstore.getRole()
@@ -96,8 +92,9 @@ export class RoomsComponent implements OnInit{
 
   RoomsFileFormatValidator(rooms:any):boolean{
     var titles :any = rooms[0];
-    var fileTitles: any = ['roomId','roomNum','max','room Limit in the exam','roomNote','roomBlock','campus','Room Type'];
+    var fileTitles: any = ['roomId','roomNum','max','roomLimit','roomNote','roomBlock','campus','Room Type'];
     var keys = Object.keys(titles);
+    console.log(keys);
     if(keys.length !=fileTitles.length){
       return false;
     }
@@ -115,7 +112,7 @@ export class RoomsComponent implements OnInit{
       var newRoom:Room = new Room();
       newRoom.roomNum = item['roomNum'];
       newRoom.SectionStudentLimit = item['max'];
-      newRoom.ExamStudentLimit = item['room Limit in the exam'];
+      newRoom.ExamStudentLimit = item['roomLimit'];
       newRoom.Type = item['Room Type'];
       newRoom.Block = item['roomBlock'];
       newRoom.campusID = 0;
@@ -174,88 +171,14 @@ export class RoomsComponent implements OnInit{
     }
   }
 
-  // filter() {
-  //   const rows = document.querySelectorAll('#rooms tbody tr');
-  //   rows.forEach(row => {
-  //     row.classList.remove('d-none');
-  //   });
-
-  //   // Filter based on selected type
-  //   if (this.selectedType !== 'All Types') {
-  //     const table = document.getElementById('rooms');
-  //     if (table) {
-  //       const rows = table.getElementsByTagName('tr');
-  //       for (let i = 1; i < rows.length; i++) {
-  //         const cells = rows[i].getElementsByTagName('td');
-  //         if (cells.length > 2 && cells[2].textContent !== this.selectedType) {
-  //           rows[i].classList.add('d-none');
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  // filterBlock() {
-  //   const rows = document.querySelectorAll('#rooms tbody tr');
-  //   rows.forEach(row => {
-  //     row.classList.remove('d-none');
-  //   });
-
-  //   // Filter based on selected type
-  //   if (this.selectedType !== 'All Types') {
-  //     const table = document.getElementById('rooms');
-  //     if (table) {
-  //       const rows = table.getElementsByTagName('tr');
-  //       for (let i = 1; i < rows.length; i++) {
-  //         const cells = rows[i].getElementsByTagName('td');
-  //         if (cells.length > 3 && cells[3].textContent !== this.selectedBlock) {
-  //           rows[i].classList.add('d-none');
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  // filterCampus() {
-  //   const rows = document.querySelectorAll('#rooms tbody tr');
-  //   rows.forEach(row => {
-  //     row.classList.remove('d-none');
-  //   });
-
-  //   // Filter based on selected type
-  //   if (this.selectedType !== 'All Types') {
-  //     const table = document.getElementById('rooms');
-  //     if (table) {
-  //       const rows = table.getElementsByTagName('tr');
-  //       for (let i = 1; i < rows.length; i++) {
-  //         const cells = rows[i].getElementsByTagName('td');
-  //         if (cells.length > 3 && cells[3].textContent !== this.selectedBlock) {
-  //           rows[i].classList.add('d-none');
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
   getRooms(){
     this.api.getRoomsData().subscribe({
       next:(data)=>{
         this.dbRooms =data;
-        this.createFilerUniqueValues();
+        if(this.dbRooms.length!==0)
+          this.roomsPages.genPages(this.dbRooms?.length)
       }
     })
-  }
-  previousPage(){
-    this.tableMax! -=10;
-    this.talbeMin! -=10;
-
-
-  }
-  nextPage(){
-    this.tableMax! +=10;
-    this.talbeMin! +=10;
-  }
-  isNextDisabled():boolean{
-    return this.dbRooms![this.tableMax]==undefined;
   }
   
 }

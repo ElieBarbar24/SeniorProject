@@ -12,6 +12,8 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import {DataTablesModule} from 'angular-datatables'
 import { FormsModule } from '@angular/forms';
 import {MatTable} from '@angular/material/table'
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 //Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -73,7 +75,7 @@ import { InformationComponent } from './components/information/information.compo
     DataTablesModule,
     FormsModule,
     MatTable,
-
+    ModalModule.forRoot(),
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

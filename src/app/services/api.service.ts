@@ -2,18 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Course } from '../models/Course.model';
 import { Room } from '../models/Room.model';
-import { Instructor } from '../models/Instructor.model';
+import { InstructorRequest } from '../models/Instructor.model';
 import { Campuses } from '../models/Campuses.model';
 import { School } from '../models/School.model';
 import { ImportInstructorsRequest } from '../models/CampusInstructors.model';
 import { CampusRooms, RoomsUploadRequest } from '../components/rooms/rooms.component';
 import { SectionsRequestFormat } from '../components/section/section.component';
+import { Departement } from '../models/Departement.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl: string = 'https://localhost:7047/api/User/';
+  private baseUrl: string = 'https://158.220.107.107:7047/api/User/';
 
   constructor(private http: HttpClient) {}
 
@@ -62,7 +63,7 @@ export class ApiService {
     return this.http.post<any>(`${this.baseUrl}ImportRooms`,request);
   }
 
-  setInstructors(instructors:Instructor[]){
+  setInstructors(instructors:InstructorRequest[]){
     return this.http.post<any>(`${this.baseUrl}ImportInstructors`,instructors);
   }
 
@@ -83,6 +84,14 @@ export class ApiService {
   }
 
   createUser(user:any){
-    return this.http.post<any>(`${this.baseUrl}CreateUser`,user)
+    return this.http.post<any>(`${this.baseUrl}CreateUser`,user);
+  }
+
+  setnewSchool(school:School){
+    return this.http.post<any>(`${this.baseUrl}saveSchool`,school);
+  }
+  
+  setnewDep(dep:Departement){
+    return this.http.post<any>(`${this.baseUrl}saveDep`,dep)
   }
 }
