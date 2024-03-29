@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <div class="p-2 row" *ngIf="allowedRoles.includes(role)">
+        <div class="col-sm-12 col-md-6">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white">
+                    <h4>Enter Course Excel File</h4>
+                    <div class="input-group" data-bs-theme="dark">
+                        <input type="file" id="inputGroupFile04" (change)="readCoursesFromExcel($event)"
+                            aria-describedby="inputGroupFileAddon04" aria-label="Upload" class="form-control">
+                        <button class="btn text-white btn-secondary" (click)="uploadCourses()" type="button"
+                            id="inputGroupFileAddon04">Upload
+                            Courses</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 pt-4 pt-sm-4 pt-md-0">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white">
+                    <h4>Enter Course Details</h4>
+                    <div class="input-group" data-bs-theme="dark">
+                        <input type="text" id="inputGroupFile03" aria-describedby="inputGroupFileAddon04"
+                            aria-label="Upload" placeholder="Enter Course" class="form-control text-white">
+                        <button class="btn text-white btn-secondary" type="button"
+                            id="inputGroupFileAddon04">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-2 row">
+        <div class="bg-dark rounded-4 ">
+            <div class="p-4 m-4 table-responsive ">
+                <table class="table table-hover" id="rooms" data-bs-theme="dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">level</th>
+                            <th scope="col">credits</th>
+                            <th scope="col">pre-requesites</th>
+                            <th scope="col">core-requesites</th>
+                            <th scope="col">dep</th>
+                            <th scope="col" *ngIf="role=='SuperAdmin'||role=='Admin'">Edit</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of dbCourses |slice:currentPage.min:currentPage.max">
+                            <tr class="text-white">
+                                <td>{{item.id}}</td>
+                                <td>{{item.code}}</td>
+                                <td>{{item.title}}</td>
+                                <td>{{item.level}}</td>
+                                <td>{{item.credits}}</td>
+                                <td>{{item.preRequesites}}</td>
+                                <td>{{item.coreRequesites}}</td>
+                                <td>{{item.dep!=null?item.dep:'Unassigned yet'}}</td>
+                                <td *ngIf="role=='SuperAdmin'||role=='Admin'"><i class="edit-icon fa fa-edit "></i></td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example" data-bs-theme="dark">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item ">
+                            <a class="page-link user-select-none first-page" [ngClass]="{'disabled':currentPageIndex==0}" (click)="firstPage()">First</a>
+                        </li>
+                        <li class="page-item " >
+                            <a class="page-link user-select-none prev-page" [ngClass]="{'disabled':currentPageIndex==0}" (click)="prevPage()">Previous</a>
+                        </li>
+                        <li class="page-item" *ngFor="let i of currentthreePage">
+                            <a class="page-link user-select-none page" (click)="indexedPage(i)" [ngClass]="{'active':currentPageIndex==i}">{{i}}</a>
+                        </li>
+                        <li class="page-item" >
+                            <a class="page-link user-select-none page" [ngClass]="{'disabled':currentPage==tablePages[tablePages.length-1]}" (click)="nextPage()">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link user-select-none page" [ngClass]="{'disabled':currentPage==tablePages[tablePages.length-1]}" (click)="lastPage()">Last</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

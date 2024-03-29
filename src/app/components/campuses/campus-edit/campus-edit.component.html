@@ -1,0 +1,16 @@
+<div class="w-100 h-100 bg-dark d-flex align-items-center justify-content-center container" data-bs-theme="dark">
+    <div class="bg-dark rounded-4 text-white" >
+        <div class="col-auto m-2 fs-2">
+            <label for="staticEmail2" class="m-1">Old Campus Name</label>
+            <input type="text" value="{{data.campus.campusesName}}" readonly class="form-control-plaintext m-1">
+        </div>
+        <div class="col-auto m-2">
+            <label for="newName" class="m-1">New Campus Name</label>
+            <input [(ngModel)]="newName" type="text" class="form-control m-1" id="newName" placeholder="New Name">
+        </div>
+        <div class="col-auto d-flex align-items-center justify-content-center ">
+            <button type="button" (click)="update()" class="btn btn-secondary me-3 mb-3 ">Update Campus</button>
+            <button type="button" (click)="closeDialog()" class="btn btn-danger mb-3 " >Cancel</button>
+        </div>
+    </div>
+</div>

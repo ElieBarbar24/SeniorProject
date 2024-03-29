@@ -1,0 +1,20 @@
+.campuses:hover{
+    transform: scale(1.05);
+}
+.campuses{
+    transition:0.5s;
+}
+
+.schools:hover{
+    transform: scale(1.05);
+}
+.schools{
+    transition:0.5s;
+}
+
+.departments:hover{
+    transform: scale(1.05);
+}
+.departments{
+    transition:0.5s;
+}

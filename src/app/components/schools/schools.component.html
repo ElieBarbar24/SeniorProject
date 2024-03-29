@@ -1,0 +1,64 @@
+<div class="row g-3 text-white bg-dark mt-4 rounded-4 p-2" *ngIf="allowedRoles.includes(role)">
+    <h5>Enter School Manualy</h5>
+    <div class="input-group">
+        <input type="text" class="form-control" [(ngModel)]="newSchool" placeholder="School Name" aria-label="Username"
+            aria-describedby="addon-wrapping" />
+    </div>
+    <div class="p-2 text-start">
+        <button class="btn btn-secondary " (click)="insertOneSchool()" type="button" id="button-addon2">
+            Save School
+        </button>
+    </div>
+</div>
+<div class="bg-dark rounded-4 p-4 mt-4">
+    <div class="row table-responsive">
+        <div class="col-12">
+            <table class="table table-hover responsive" data-bs-theme="dark">
+                <thead>
+                    <tr>
+                        <th scope="col">School ID</th>
+                        <th scope="col">School Name</th>
+                        <th scope="col" *ngIf="role == 'SuperAdmin'">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let school of dbSchools" class="text-white">
+                        <td>{{school.schoolId}}</td>
+                        <td>{{school.schoolName}}</td>
+                        <td *ngIf="role == 'SuperAdmin'"><a class="edit-icon"><i class="fa fa-edit"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12">
+            <nav aria-label="Page navigation example" data-bs-theme="dark">
+                <ul class="pagination ">
+                    <li class="page-item">
+                        <a class="page-link user-select-none first-page"
+                            [ngClass]="{ disabled: this.schoolsPages.currentPageIndex == 1 }"
+                            (click)="this.schoolsPages.firstPage()">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link user-select-none prev-page"
+                            [ngClass]="{ 'disabled': this.schoolsPages.currentPageIndex == 1 }"
+                            (click)="this.schoolsPages.prevPage()">Previous</a>
+                    </li>
+                    <li class="page-item" *ngFor="let i of this.schoolsPages.currentthreePage">
+                        <a class="page-link user-select-none page" (click)="this.schoolsPages.indexedPage(i)"
+                            [ngClass]="{ 'active': this.schoolsPages.currentPageIndex == i }">{{ i }}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link user-select-none page"
+                            [ngClass]="{'disabled':this.schoolsPages.currentPage.max == this.schoolsPages.tablePages[this.schoolsPages.tablePages.length - 1].max}"
+                            (click)="this.schoolsPages.nextPage()">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link user-select-none page"
+                            [ngClass]="{'disabled':this.schoolsPages.currentPage.max == this.schoolsPages.tablePages[this.schoolsPages.tablePages.length - 1].max}"
+                            (click)="this.schoolsPages.lastPage()">Last</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

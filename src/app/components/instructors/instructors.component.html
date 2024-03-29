@@ -1,0 +1,166 @@
+<div class="container-fluid">
+    <div class="p-4 row" *ngIf="allowedRoles.includes(role)">
+        <div class="col-sm-12 col-md-8">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white" data-bs-theme="dark">
+                    <h4>Enter New Instructor Manualy</h4>
+                    <div class="col-lg-4 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="First Name" aria-label="Username"
+                                aria-describedby="addon-wrapping" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Middle Name" aria-label="Username"
+                                aria-describedby="addon-wrapping" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="LastName Name" aria-label="Username"
+                                aria-describedby="addon-wrapping" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                                aria-describedby="addon-wrapping" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <input type="email" class="form-control" placeholder="Email" aria-label="Email"
+                            aria-describedby="addon-wrapping" />
+                    </div>
+                    <div class="col-lg-3 col-12">
+                        <select class="form-select">
+                            <option value="" selected disabled hidden>Choose School</option>
+                            <ng-container> </ng-container>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-12">
+                        <select class="form-select">
+                            <option value="" selected disabled hidden>
+                                Choose Departement
+                            </option>
+                            <ng-container> </ng-container>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-12">
+                        <h5>Select Campuses</h5>
+                        <ng-container *ngFor="let c of dbCampuses">
+                            <label class="col-12 col-lg-6">
+                                <input class="form-check-input me-1" (change)="pushNewCampus(c)" type="checkbox"
+                                    value="{{c}}" />
+                                {{c.campusesName}}
+                            </label>
+                        </ng-container>
+                    </div>
+                    <div class="col-lg-3 col-12">
+                        <select class="form-select">
+                            <option value="" selected disabled hidden>
+                                Choose Main Campus
+                            </option>
+                            <ng-container *ngFor="let item of selectedCampuses">
+                            <option value="{{item.campusesName}}">
+                                {{item.campusesName}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class="text-start">
+                        <button class="btn btn-secondary" type="button" id="button-addon2">
+                            Save Instructor
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 mt-4 mt-md-0 col-md-4">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white">
+                    <h4>Enter Instructors Using Excel File</h4>
+                    <div class="input-group">
+                        <input type="file" class="form-control" data-bs-theme="dark" id="inputGroupFile04"
+                            aria-describedby="inputGroupFileAddon04" aria-label="Upload"
+                            (change)="readInstructors($event)" />
+                        <button class="btn btn-secondary" type="button" id="inputGroupFileAddon04"
+                            (click)="uploadInstructors()">
+                            Upload Instructors
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-4">
+        <div class="bg-dark rounded-4">
+            <div class="p-4 table-responsive">
+                <table class="table p-4 table-hover" data-bs-theme="dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">title</th>
+                            <th scope="col">fname</th>
+                            <th scope="col">mnme</th>
+                            <th scope="col">lname</th>
+                            <th scope="col">username</th>
+                            <th scope="col">email</th>
+                            <th scope="col">school</th>
+                            <th scope="col">division</th>
+                            <th scope="col">Campus</th>
+                            <th scope="col" *ngIf="role == 'SuperAdmin'">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="
+                let i of dbInstructors
+                  | slice : currentPage.min : currentPage.max
+              " class="text-white">
+                            <td>{{ i.id }}</td>
+                            <td>{{ i.title }}</td>
+                            <td>{{ i.fname }}</td>
+                            <td>{{ i.mname }}</td>
+                            <td>{{ i.lname }}</td>
+                            <td>{{ i.username }}</td>
+                            <td>{{ i.email }}</td>
+                            <td>{{ i.schoolName }}</td>
+                            <td>{{ i.dep }}</td>
+                            <td>{{ i.campusName }}</td>
+                            <td *ngIf="role == 'SuperAdmin' || role == 'Admin'">
+                                <a (click)="onEdit(i)" class="edit-icon"><i class="fa fa-edit"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example" data-bs-theme="dark">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link user-select-none first-page"
+                                [ngClass]="{ disabled: currentPageIndex == 1 }" (click)="firstPage()">First</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link user-select-none prev-page"
+                                [ngClass]="{ disabled: currentPageIndex == 1 }" (click)="prevPage()">Previous</a>
+                        </li>
+                        <li class="page-item" *ngFor="let i of currentthreePage">
+                            <a class="page-link user-select-none page" (click)="indexedPage(i)"
+                                [ngClass]="{ active: currentPageIndex == i }">{{ i }}</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link user-select-none page" [ngClass]="{
+                  disabled:
+                    currentPage.max == tablePages[tablePages.length - 1].max
+                }" (click)="nextPage()">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link user-select-none page" [ngClass]="{
+                  disabled:
+                    currentPage.max == tablePages[tablePages.length - 1].max
+                }" (click)="lastPage()">Last</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

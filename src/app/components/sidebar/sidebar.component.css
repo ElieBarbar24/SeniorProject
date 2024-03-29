@@ -1,0 +1,46 @@
+.nav-item-hover {
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    border-radius: 8px; 
+}
+
+.nav-item-hover:hover {
+    background-color: #6c757d;
+    border-radius: 8px; 
+    cursor: pointer;
+}
+
+.nav-item-hover:hover .nav-link {
+    color: #ffffff !important;
+    cursor: pointer;
+    border-radius: 8px; 
+
+}
+
+.nav-item{
+    cursor: pointer;
+}
+
+
+.nav-item-logout {
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+    border-radius: 8px; 
+}
+
+.nav-item-logout:hover {
+    background-color: #dc3545;
+    border-radius: 8px; 
+    cursor: pointer;
+}
+
+.nav-item-logout:hover .nav-link {
+    color: #ffffff !important;
+    cursor: pointer;
+    border-radius: 8px; 
+}
+
+.btn:hover{
+    background-color: #dc3545;
+    color: #ffffff;
+}

@@ -1,0 +1,16 @@
+.page{
+    cursor: pointer;
+}
+
+.prev-page{
+    cursor: pointer;
+}
+
+.edit:hover{
+    color: #dc3545;
+    cursor: pointer;
+}
+
+.edit{
+    transition: 0.2s;
+}

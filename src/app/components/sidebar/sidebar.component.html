@@ -1,0 +1,35 @@
+<div
+    class="h-100 bg-dark  col-2 col-sm-2 col-md-3 col-lg-2  d-flex flex-column justify-content-between align-items-center position-fixed ">
+    <!-- col-4 col-sm-4 col-md-3 col-lg-2 -->
+    <div class="p-2" id="sidebar">
+        <ul class="nav nav-pills flex-column mt-4">
+            <li class="nav-item py-2 py-sm-0 mb-2">
+                <a class="d-flex text-decoration-none mt-1 align-items-center  flex-column">
+                    <img src="https://liu.edu.lb/NewLIU2022/common/images/logo.png"
+                        class="fs-1 d-none text-center d-md-inline" />
+                    <span class="display-6 text-warning d-none text-center d-md-inline">LIU Exams Scheduler</span>
+                </a>
+            </li>
+            <!-- <li class="nav-item py-2 py-sm-0 mb-2" *ngFor="let data of navData">
+                <a (click)="navigateTo(data.routeLink)" class="nav-link text-white text-md-start text-sm-center"
+                    [ngClass]="{'active':activeLink == data.routeLink,'nav-item-hover':activeLink != data.routeLink}">
+                    <i class="fs-5 {{data.icon}} me-2"></i><span class="fs-4 d-none d-sm-inline ">{{data.label}}</span>
+                </a>
+            </li> -->
+            <li *ngFor="let item of navigationItems" class="nav-item py-2 py-sm-0 mb-2">
+                <a (click)="navigateTo(item.route)" class="nav-link text-white text-md-start text-sm-center"
+                    [ngClass]="{'active': activeLink == item.route, 'nav-item-hover': activeLink != item.route}"
+                    *ngIf="!item.roles || item.roles.includes(role!)">
+                    <i class="fs-5 fa-solid {{ item.iconClass }} me-2"></i><span class="fs-4 d-none d-md-inline">{{
+                        item.label }}</span>
+                </a>
+            </li>
+
+            <li class="nav-item nav-item-logout py-2 py-sm-0 mb-2">
+                <a (click)="Logout()" class="nav-link text-danger text-md-start text-sm-center">
+                    <i class="fs-5 fa-solid fa-sign-out me-2"></i><span class="fs-4 d-none d-md-inline">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
