@@ -5,16 +5,20 @@ import { Room } from '../models/Room.model';
 import { InstructorRequest } from '../models/Instructor.model';
 import { Campuses } from '../models/Campuses.model';
 import { School } from '../models/School.model';
-import { ImportInstructorsRequest } from '../models/CampusInstructors.model';
-import { CampusRooms, RoomsUploadRequest } from '../components/rooms/rooms.component';
-import { SectionsRequestFormat } from '../components/section/section.component';
+import { CampusRooms, RoomsUploadRequest, newRoom } from '../components/rooms/rooms.component';
+import { NewSection, SectionsRequestFormat } from '../components/section/section.component';
 import { Departement } from '../models/Departement.model';
+import { ResetPasswordFormat, UpdateUserActivityFormat } from '../components/admins-creator/admins-creator.component';
+import { NewInstructor } from '../components/instructors/instructors.component';
+import { NewCourseFormat } from '../components/courses/courses.component';
+import { NewExamDatesFormat, SearchFormat, examRoomGenerateFormat } from '../components/exam-schedule/exam-schedule.component';
+import { ExamIdRequest, UpdateProctoringFormat } from '../components/exam-schedule/exam-schedule-edit/exam-schedule-edit.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl: string = 'https://158.220.107.107:7047/api/User/';
+  private baseUrl: string = 'https://localhost:7047/api/User/';
 
   constructor(private http: HttpClient) {}
 
@@ -54,6 +58,34 @@ export class ApiService {
     return this.http.get<any>(`${this.baseUrl}getRoles`);
   }
 
+  getInst(){
+    return this.http.get<any>(`${this.baseUrl}getInst`);
+  }
+
+  getExamTypes(){
+    return this.http.get<any>(`${this.baseUrl}getExamTypes`)
+  }
+
+  getUniqueAcademicyear(){
+    return this.http.get<any>(`${this.baseUrl}GetUniqueAcademicYear`)
+  }
+
+  getExams(format:SearchFormat){
+    return this.http.post<any>(`${this.baseUrl}GetExams`,format)
+  }
+
+  getScheduel(format:examRoomGenerateFormat){
+    return this.http.post<any>(`${this.baseUrl}getExamsForDownload`,format)
+  }
+
+  getInstructorsForProctoring(e:ExamIdRequest){
+    return this.http.post<any>(`${this.baseUrl}GetInstructorsForProctoring`,e)
+  }
+
+  getExamProctorsSingle(e:ExamIdRequest){
+    return this.http.post<any>(`${this.baseUrl}GetProctorsIds`,e);
+  }
+
   //Setter
   setCourses(array:Course[]){
     return this.http.post<any>(`${this.baseUrl}ImportCourses`,array);
@@ -83,6 +115,12 @@ export class ApiService {
     return this.http.post<any>(`${this.baseUrl}UpdateInstructor`,inst)
   }
 
+  updateRoom(room:any){
+    
+    return this.http.post<any>(`${this.baseUrl}UpdateRooms`,room)
+
+  }
+
   createUser(user:any){
     return this.http.post<any>(`${this.baseUrl}CreateUser`,user);
   }
@@ -93,5 +131,49 @@ export class ApiService {
   
   setnewDep(dep:Departement){
     return this.http.post<any>(`${this.baseUrl}saveDep`,dep)
+  }
+
+  updateUserActivity(format:UpdateUserActivityFormat){
+    return this.http.post<any>(`${this.baseUrl}updateUserActivity`,format)
+  }
+
+  insertNewInstructor(format:NewInstructor){
+    return this.http.post<any>(`${this.baseUrl}InsertInstructorManual`,format);
+  }
+
+  resetUserPassword(format:ResetPasswordFormat){
+    return this.http.post<any>(`${this.baseUrl}ResetUserPassword`,format)
+  }
+
+  newCourse(format:NewCourseFormat){
+    return this.http.post<any>(`${this.baseUrl}NewCourse`,format);
+  }
+
+  newRoom(format:newRoom){
+    return this.http.post<any>(`${this.baseUrl}NewRoom`,format);
+  }
+
+  newSection(format:NewSection){
+    return this.http.post<any>(`${this.baseUrl}newSection`,format);
+  }
+
+  newSectionsExam(format:NewExamDatesFormat){
+    return this.http.post<any>(`${this.baseUrl}NewExamDates`,format);
+  }
+
+  generateExamRoom(format:examRoomGenerateFormat){
+    return this.http.post<any>(`${this.baseUrl}GenerateExamRooms`,format);
+  }
+
+  generateProctors(format:examRoomGenerateFormat){
+    return this.http.post<any>(`${this.baseUrl}GenerateProctors`,format);
+  }
+
+  updateSection(format:any){
+    return this.http.post<any>(`${this.baseUrl}UpdateSection`,format);
+  }
+
+  updateExamProctors(format:UpdateProctoringFormat){
+    return this.http.post<any>(`${this.baseUrl}UpdateExamProctoringSchedule`,format);
   }
 }

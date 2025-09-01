@@ -1,0 +1,47 @@
+<div class="container-fluid align-content-center justify-content-center d-flex w-auto m-0 p-0" data-bs-theme="dark">
+    <div class="bg-dark">
+        <h1 class="text-danger m-4">Edit Section</h1>
+        <div class="row g-3 m-4 text-white">
+            <div class="col-md-4">
+                <label class="form-label">Course Code</label>
+                <input [(ngModel)]="this.data.section.course.code" disabled type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Course Title</label>
+                <input [(ngModel)]="this.data.section.course.title" disabled type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Section</label>
+                <input [(ngModel)]="this.data.section.section" disabled type="text" class="form-control">
+            </div>
+            <div class="col-6">
+                <label for="inputAddress" class="form-label">Student Number</label>
+                <input [(ngModel)]="this.data.section.nb" disabled type="text" class="form-control" id="inputAddress"
+                    placeholder="">
+            </div>
+            <div class="col-6">
+                <label for="inputAddress2" class="form-label">Instructor</label>
+                <select [(ngModel)]="selectedInstructor" class="form-select">
+                    <ng-container *ngFor="let item of dbInstructors">
+                        <option value="{{item.id}}">
+                            {{item.username}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Room</label>
+                <select [(ngModel)]="selectedRoom" class="form-select">
+                    <ng-container *ngFor="let item of dbRooms">
+                        <option value="{{item.id}}">
+                            {{item.roomNum}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            
+            <div class="col-12">
+                <button type="submit" (click)="onSave()" class="btn me-2 btn-secondary">Update Instructor</button>
+                <button type="submit" (click)="onClose()" class="btn btn-danger">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

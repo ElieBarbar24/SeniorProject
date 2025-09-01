@@ -25,11 +25,20 @@ export class InstructorsComponent implements OnInit {
   role!: string;
   isCampusData: boolean = false;
   dbCampuses: any[] = [];
+  dbSchool: any[] = [];
 
-  allowedRoles:string[] = ['SuperAdmin','Admin'];
+  allowedRoles: string[] = ['SuperAdmin', 'Admin'];
 
   selectedCampuses: any[] = []
+  selectedSchool: number = 0;
+  selectedDepartment: number = 0;
 
+  fname: string | undefined;
+  mname: string | undefined;
+  lname: string | undefined;
+  title: string | undefined;
+  email: string | undefined;
+  mainCampus: number | undefined;
 
   maxRows: number = 10
   currentthreePage: number[] = [1, 2, 3];
@@ -46,6 +55,7 @@ export class InstructorsComponent implements OnInit {
       this.role = val || roleFromToken;
     })
     this.getCampuse();
+    this.getSchools();
     this.getInstructorsFullData();
   }
 
@@ -161,6 +171,18 @@ export class InstructorsComponent implements OnInit {
     })
   }
 
+  getSelectedSchoolDepartments(): any[] | undefined {
+    console.log(this.selectedSchool);
+    for (var s of this.dbSchool) {
+      if (s.schoolId == this.selectedSchool) {
+        console.log(s.departments);
+        return s.departments
+      }
+    }
+    return undefined;
+  }
+
+
   createAPICampuseInstructors(): InstructorsCampuses[] {
     var campusInstructors: InstructorsCampuses[] = [];
     for (let item of this.ExcelInstructors) {
@@ -179,18 +201,49 @@ export class InstructorsComponent implements OnInit {
   getCampuse() {
     this.api.getCampuses().subscribe({
       next: (res) => {
-        if (res.length == 0) {
-          this.isCampusData = false;
-          this.route.navigate(['DashBoard', 'Campuses']);
-          this.toast.error({ detail: "ERROR", summary: "You Need To Upload Campuses Before Uploading Instructors" });
-          this.activeLink.setActiveLink("Instructors")
-        } else {
-          this.isCampusData = true;
-          this.dbCampuses = res;
-        }
+        this.isCampusData = true;
+        this.dbCampuses = res;
       }
     }
     )
+  }
+
+  onSubmit() {
+    var newInst: NewInstructor = new NewInstructor();
+    var campuses: number[] = [];
+    for (var c of this.selectedCampuses) {
+      campuses.push(c.id);
+    }
+    newInst.fname = this.fname;
+    newInst.mname = this.mname;
+    newInst.lname = this.lname;
+    newInst.title = this.title;
+    newInst.email = this.email;
+    newInst.depId = this.selectedDepartment;
+    newInst.campuses = campuses;
+    newInst.mainCampus = this.mainCampus;
+    newInst.schoolId = this.selectedSchool;
+
+    this.api.insertNewInstructor(newInst).subscribe({
+      next: (res) => {
+        console.log(res)
+        this.getInstructorsFullData();
+        this.toast.success({ detail: "Success", summary: "New Instructor Uploaded Successfully", duration: this.toastDuration })
+      },
+      error: (err) => {
+        this.toast.error({ detail: "ERROR", summary: "Error While Uploading New Instructor", duration: this.toastDuration });
+        console.log(err);
+      },
+    })
+  }
+
+  getSchools() {
+    this.api.getSchools().subscribe({
+      next: (res) => {
+        this.dbSchool = res;
+        console.log(res);
+      }
+    })
   }
 
   nextPage() {
@@ -226,6 +279,11 @@ export class InstructorsComponent implements OnInit {
     this.currentPage = this.tablePages[0];
     this.currentPageIndex = 1;
     this.currentthreePage = [1, 2, 3];
+  }
+
+  onSchoolSelected(schoolName: string) {
+    // Find the selected school object from dbSchool array based on the selected schoolName
+    this.selectedSchool = this.dbSchool.find(s => s.schoolName === schoolName);
   }
 
   onEdit(item: any) {
@@ -269,4 +327,17 @@ export class Page {
     this.min = min;
     this.max = max;
   }
+}
+
+export class NewInstructor {
+  fname: string | undefined;
+  mname: string | undefined;
+  lname: string | undefined;
+  title: string | undefined;
+  email: string | undefined;
+  depId: number | undefined;
+  schoolId: number | undefined;
+
+  campuses: any[] | undefined;
+  mainCampus: any | undefined;
 }

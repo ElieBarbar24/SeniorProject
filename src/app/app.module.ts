@@ -38,6 +38,10 @@ import { RoomsComponent } from './components/rooms/rooms.component';
 import { SchoolsComponent } from './components/schools/schools.component';
 import { DepartmentsComponent } from './components/departments/departments.component';
 import { InformationComponent } from './components/information/information.component';
+import { RoomEditComponent } from './components/rooms/room-edit/room-edit.component';
+import { SectionEditComponent } from './components/section/section-edit/section-edit.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { ExamScheduleEditComponent } from './components/exam-schedule/exam-schedule-edit/exam-schedule-edit.component';
 
 
 
@@ -61,6 +65,10 @@ import { InformationComponent } from './components/information/information.compo
     SchoolsComponent,
     DepartmentsComponent,
     InformationComponent,
+    RoomEditComponent,
+    SectionEditComponent,
+    StatisticsComponent,
+    ExamScheduleEditComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ import { SectionComponent } from './components/section/section.component';
 import { AdminsCreatorComponent } from './components/admins-creator/admins-creator.component';
 import { ExamScheduleComponent } from './components/exam-schedule/exam-schedule.component';
 import { InformationComponent } from './components/information/information.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 
 
@@ -29,6 +30,7 @@ const routes: Routes = [
     {path:'Room',component:RoomsComponent},
     {path:'Schedule',component:ExamScheduleComponent},
     {path:'Course',component:CoursesComponent},
+    {path:'Statistics',component:StatisticsComponent},
   ]},
 ];
 

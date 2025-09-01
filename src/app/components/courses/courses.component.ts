@@ -13,12 +13,20 @@ import { Course } from '../../models/Course.model';
 })
 export class CoursesComponent implements OnInit{
   dbCourses:any[]|undefined;
+  dbDep:any[]|undefined;
   ExcelCourses:any[] = [];
 
   toastDuration:number = 5000;
   role!:string;
   allowedRoles:string[] = ['SuperAdmin','Admin'];
 
+  courseCode:string = '';
+  courseTitle:string='';
+  courseCredits:string = '';
+  coursesLevel:string = '';
+  coursePre:string = '';
+  courseCore:string = '';
+  courseDep:string = '';
 
   maxRows:number = 10
   currentthreePage:number[] = [0,1,2];
@@ -35,7 +43,8 @@ export class CoursesComponent implements OnInit{
         const roleFromToken = this.auth.getRoleFromToke();
         this.role = val||roleFromToken;
       });
-      this.getCourses(); 
+      this.getCourses();
+      this.getDep();
   }
 
   readCoursesFromExcel(event:any):void{
@@ -101,7 +110,6 @@ export class CoursesComponent implements OnInit{
 
   uploadCourses(){
     var courses:Course[] = this.createAPICourses();
-
     if(courses.length==0){
       this.toast.error({detail:"ERROR",summary:"You Need To upload The Courses Excel File first",duration:this.toastDuration})
         return;
@@ -122,7 +130,6 @@ export class CoursesComponent implements OnInit{
   getCourses(){
     this.api.getCourses().subscribe({
       next:(data)=>{
-        console.log(data);
         this.dbCourses = data;
         var page:number = this.dbCourses!.length;
         this.tablePages.push(new Page(0,this.maxRows))
@@ -132,6 +139,37 @@ export class CoursesComponent implements OnInit{
       }
     })
   }
+
+  getDep(){
+    this.api.getDep().subscribe({
+      next:(data)=>{
+        this.dbDep = data;
+        console.log(this.dbDep)
+      }
+    })
+  }
+
+  onSubmit(){
+    var newCourse:NewCourseFormat = new NewCourseFormat();
+    newCourse.courseCode = this.courseCode;
+    newCourse.courseCore = this.courseCore;
+    newCourse.courseCredit = this.courseCredits;
+    newCourse.courseDep = this.courseDep;
+    newCourse.coursePre = this.coursePre;
+    newCourse.courseTitle = this.courseTitle;
+    newCourse.courseLevel = this.coursesLevel;
+    
+    this.api.newCourse(newCourse).subscribe({
+      next:(res)=>{
+        this.toast.success({detail:"Success",summary:"New Courses Created Successfuly",duration:this.toastDuration});
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toast.error({detail:"ERROR",summary:"Server Error",duration:this.toastDuration});
+      }
+    })
+  }
+
   nextPage(){
     this.currentPage = new Page(this.currentPage.min+this.maxRows,this.currentPage.max+this.maxRows);
     this.currentPageIndex +=1;
@@ -175,4 +213,14 @@ export class Page{
     this.min = min;
     this.max = max;
   }
+}
+
+export class  NewCourseFormat{
+  courseCode:string|undefined;
+  courseCredit:string|undefined;
+  courseTitle:string|undefined;
+  courseLevel:string|undefined;
+  coursePre:string|undefined;
+  courseCore:string|undefined;
+  courseDep:string|undefined;
 }

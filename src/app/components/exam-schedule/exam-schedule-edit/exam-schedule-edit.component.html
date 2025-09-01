@@ -1,0 +1,33 @@
+<div class="container-fluid align-content-center justify-content-center d-flex w-auto m-0 p-0" data-bs-theme="dark">
+    <div class="bg-dark">
+        <h2 class="text-danger m-4">Edit Proctoring Schedule</h2>
+        <div class="row g-3 m-4 text-white">
+            <div class="row p-4">
+                <div class="input-group">
+                    <input [(ngModel)]="instructorUserName" type="text" class="form-control"
+                        placeholder="Instructor Username" aria-label="Instructor Username"
+                        aria-describedby="addon-wrapping" />
+                </div>
+            </div>
+            <div class="row p-4 scrollable-row">
+                <ng-container *ngFor="let instructor of dbInstructors; let i = index">
+                    <div class="col-4 d-flex align-items-center mb-3" *ngIf="instructor.name.toLowerCase().startsWith(instructorUserName.toLowerCase())">
+                      <div class="form-check me-3">
+                        <input type="checkbox" (change)="onCheckboxChange(instructor,$event)" class="form-check-input" [checked]="dbProctors.includes(instructor.id)" id="proctor-{{instructor.id}}" />
+                        <label class="form-check-label" [for]="'proctor-' + instructor.id">{{ instructor.name }}</label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox" (change)="onChiefCheckboxChange(instructor)" class="form-check-input" [checked]="chiefProctorId === instructor.id" id="chief-{{instructor.id}}" />
+                        <label class="form-check-label" [for]="'chief-' + instructor.id">Chief</label>
+                      </div>
+                    </div>
+                  </ng-container>
+            </div>
+            <div class="col p-4">
+                <button type="submit" (click)="onSave()" class="btn me-2 btn-secondary">Update Instructor</button>
+                <button type="submit" (click)="onClose()" class="btn btn-danger">Cancel</button>
+            </div>
+        
+        </div>
+    </div>
+</div>

@@ -12,45 +12,49 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   templateUrl: './admins-creator.component.html',
   styleUrl: './admins-creator.component.css'
 })
-export class AdminsCreatorComponent implements OnInit{
-  @ViewChild('staticModal') staticModal: ModalDirective|undefined;
-  role!:string;
-  isActive:boolean = false;
-  dbRoles:any[] = [];
-  dbUsers:any[] = []
-  userPages:Pagination = new Pagination();
-  toastDuration:number = 5000;
+export class AdminsCreatorComponent implements OnInit {
+  @ViewChild('staticModal') staticModal: ModalDirective | undefined;
+  @ViewChild('resetConfirmationModal') resetConfirmationModal: ModalDirective | undefined;
 
-  newUserRole:string = '';
-  newUserName:string = '';
-  newUserEmail:string = '';
+  role!: string;
+  isActive: boolean = false;
+  dbRoles: any[] = [];
+  dbUsers: any[] = []
+  userPages: Pagination = new Pagination();
+  toastDuration: number = 5000;
 
-  ConfirmationDescription:string = '';
-  constructor(private api:ApiService,private toast:NgToastService,private userStore:UserStoreService,private auth:AuthService){}
+  newUserRole: string = '';
+  newUserName: string = '';
+  newUserEmail: string = '';
+
+  ConfirmationDescription: string = '';
+  conf: UpdateUserActivityFormat = new UpdateUserActivityFormat();
+  resConf: ResetPasswordFormat = new ResetPasswordFormat();
+  constructor(private api: ApiService, private toast: NgToastService, private userStore: UserStoreService, private auth: AuthService) { }
 
 
   ngOnInit(): void {
     this.getRoles();
     this.getUsers();
     this.userStore.getRole()
-      .subscribe(val=>{
+      .subscribe(val => {
         const roleFromToken = this.auth.getRoleFromToke();
-        this.role = val||roleFromToken;
+        this.role = val || roleFromToken;
       });
   }
 
-  getRoles(){
+  getRoles() {
     this.api.getRoles().subscribe({
-      next:(data)=>{
+      next: (data) => {
         this.dbRoles = data;
         console.log(this.dbRoles);
       }
     })
   }
 
-  getUsers(){
+  getUsers() {
     this.api.getUsers().subscribe({
-      next:(data)=>{
+      next: (data) => {
         this.dbUsers = data;
         console.log(this.dbUsers);
         this.userPages.genPages(this.dbUsers.length);
@@ -58,21 +62,21 @@ export class AdminsCreatorComponent implements OnInit{
     })
   }
 
-  onSubmit(){
-    var user:CreateUserRequestForm = this.createUserRequest();
+  onSubmit() {
+    var user: CreateUserRequestForm = this.createUserRequest();
     this.api.createUser(user).subscribe({
-      next:(value)=>{
-        this.toast.success({detail:"Success",summary:"User Created Successfully",duration:this.toastDuration})
+      next: (value) => {
+        this.toast.success({ detail: "Success", summary: "User Created Successfully", duration: this.toastDuration })
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err);
       }
     })
   }
 
-  createUserRequest():CreateUserRequestForm{
-    var user:CreateUserRequestForm = new CreateUserRequestForm();
-    
+  createUserRequest(): CreateUserRequestForm {
+    var user: CreateUserRequestForm = new CreateUserRequestForm();
+
     user.isActive = this.isActive;
     user.email = this.newUserEmail;
     user.username = this.newUserName;
@@ -81,19 +85,70 @@ export class AdminsCreatorComponent implements OnInit{
     return user;
   }
 
-  onConfirm(){
-    if(this.staticModal){
+  onConfirm() {
+    if (this.staticModal) {
       this.staticModal.hide();
+
+      this.api.updateUserActivity(this.conf).subscribe({
+        next: (data) => {
+          this.toast.success({ detail: "Success", summary: "User Updated", duration: this.toastDuration })
+          this.getUsers();
+
+        },
+        error: (err) => {
+
+        },
+      })
     }
   }
 
-  openConfirmation(){
-    if(this.staticModal){
+  openConfirmation() {
+    if (this.staticModal) {
       this.staticModal.show();
     }
   }
 
-  submit(){
-    console.log(this.isActive);
+  onChangeIsActive(data: any) {
+    data.isActive = !data.isActive;
+    this.conf.Id = data.id;
+    this.conf.isActive = data.isActive;
+    console.log(this.conf);
+    this.openConfirmation();
+    console.log(data)
   }
+
+  resetConfirmation(){
+    if(this.resetConfirmationModal){
+      this.resetConfirmationModal.hide();
+
+      this.api.resetUserPassword(this.resConf).subscribe({
+        next: (data) => {
+          this.toast.success({ detail: "Success", summary: "User Password Reseted", duration: this.toastDuration })
+          this.getUsers();
+
+        },
+        error: (err) => {
+
+        },
+      })
+
+    }
+  }
+
+  onResetPassword(data:any){
+    if(this.resetConfirmationModal){
+      this.resetConfirmationModal.show();
+
+      this.resConf.Id = data.id;
+    }
+  }
+}
+
+export class UpdateUserActivityFormat {
+  Id: string | undefined;
+  isActive: boolean | undefined;
+}
+
+export class ResetPasswordFormat {
+  Id: string | undefined;
 }

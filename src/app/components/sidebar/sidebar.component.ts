@@ -18,7 +18,7 @@ export class SidebarComponent {
     { label: 'Course', iconClass: 'fa-solid fa-book', route: 'Course', roles: ['SuperAdmin', 'Admin','Proctor']  },
     { label: 'Room', iconClass: 'fa-solid fa-table-cells-large', route: 'Room', roles: ['SuperAdmin', 'Admin','Proctor'] },
     { label: 'Section', iconClass: 'fa-solid fa-hourglass', route: 'Section', roles: ['SuperAdmin', 'Admin','Proctor']  },
-    { label: 'Admins', iconClass: 'fa-solid fa-shield', route: 'Admins', roles: ['SuperAdmin', 'Admin'] },
+    { label: 'Admins', iconClass: 'fa-solid fa-shield', route: 'Admins', roles: ['SuperAdmin', 'Admin'] }
   ];
 
   activeLink!: string;

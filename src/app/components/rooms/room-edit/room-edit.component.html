@@ -1,0 +1,46 @@
+<div class="container-fluid align-content-center justify-content-center d-flex w-auto m-0 p-0" data-bs-theme="dark">
+    <div class="bg-dark">
+        <h1 class="text-danger m-4">Edit Room</h1>
+        <div class="row g-3 m-4 text-white">
+            <div class="col-md-4">
+                <label class="form-label">Room Num</label>
+                <input [(ngModel)]="roomNum" disabled type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">RoomType</label>
+                <input [(ngModel)]="roomType" type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Block</label>
+                <input [(ngModel)]="block" disabled type="text" class="form-control">
+            </div>
+            <div class="col-6">
+                <label for="inputAddress" class="form-label">Section Limit</label>
+                <input [(ngModel)]="sectionLimit" type="number" class="form-control" placeholder="">
+            </div>
+            <div class="col-6">
+                <label class="form-label">Exam Limit</label>
+                <input [(ngModel)]="examLimit" type="number" class="form-control" placeholder="Exam Limit">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Campus</label>
+                <input [(ngModel)]="campus" disabled type="text" class="form-control">
+            </div>
+            <div class="col-6">
+                <label class="form-label">Room Exam Priority</label>
+                <input [(ngModel)]="priority" type="number" class="form-control" placeholder="Priority">
+            </div>
+            <div class="col-6">
+                <label class="form-label">Room Exam Availability</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                        [(ngModel)]="roomExamAvailability">
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" (click)="onSave()" class="btn me-2 btn-secondary">Update Room</button>
+                <button type="submit" (click)="onClose()" class="btn btn-danger">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

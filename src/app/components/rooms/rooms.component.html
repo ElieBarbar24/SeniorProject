@@ -16,13 +16,52 @@
         </div>
         <div class="col-sm-12 col-md-6 pt-4 pt-sm-4 pt-md-0">
             <div class="bg-dark p-4 rounded-4">
-                <div class="row g-3 text-white">
+                <div class="row g-3 text-white" data-bs-theme="dark">
                     <h4>Enter Rooms Excel File File</h4>
-                    <div class="input-group" data-bs-theme="dark">
-                        <input type="text" id="inputGroupFile03" aria-describedby="inputGroupFileAddon04"
-                            aria-label="Upload" placeholder="Enter Room" class="form-control text-white">
-                        <button class="btn text-white bt-secondary" type="button"
-                            id="inputGroupFileAddon04">Upload</button>
+                    <div class="col-lg-6 col-12">
+                        <div  class="input-group" data-bs-theme="dark">
+                            <input [(ngModel)]="newRoomNum" type="text" id="roomNum" aria-describedby="inputGroupFileAddon04"
+                                aria-label="Upload" placeholder="Enter Room Num" class="form-control text-white">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="input-group" data-bs-theme="dark">
+                            <input [(ngModel)]="newRoomType" type="text" id="roomType" aria-describedby="inputGroupFileAddon04"
+                                aria-label="Upload" placeholder="Enter Room Type" class="form-control text-white">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="input-group" data-bs-theme="dark">
+                            <input [(ngModel)]="newRoomBlock" type="text" id="roomBlock" aria-describedby="inputGroupFileAddon04"
+                                aria-label="Upload" placeholder="Enter Room Block" class="form-control text-white">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <select class="form-select" [(ngModel)]="newRoomCampus">
+                            <option value="" selected disabled hidden>
+                                Choose Campus
+                            </option>
+                            <ng-container *ngFor="let c of dbCampuses">
+                                <option value="{{c.id}}">{{c.campusesName}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="input-group" data-bs-theme="dark">
+                            <input [(ngModel)]="newRoomSectionMax" type="text" id="roomSectionLimit" aria-describedby="inputGroupFileAddon04"
+                                aria-label="Upload" placeholder="Enter Room Section Limit" class="form-control text-white">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="input-group" data-bs-theme="dark">
+                            <input [(ngModel)]="newRoomExamLimit" type="text" id="roomSectionLimit" aria-describedby="inputGroupFileAddon04"
+                                aria-label="Upload" placeholder="Enter Room Exam Limit" class="form-control text-white">
+                        </div>
+                    </div>
+                    <div class="text-start">
+                        <button (click)="onSubmit()" class="btn btn-secondary" type="button" id="button-addon2">
+                            Save Room
+                        </button>
                     </div>
                 </div>
             </div>
@@ -41,13 +80,15 @@
                             <th scope="col">Block</th>
                             <th scope="col">section Student Limit</th>
                             <th scope="col">Exam Student Limit</th>
+                            <th scope="col">Exam Room Priority</th>
                             <th scope="col">Campus</th>
+
                             <th scope="col" *ngIf="role=='SuperAdmin'||role=='Admin'">Edit</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let item of dbRooms | slice:roomsPages.currentPage.min:roomsPages.currentPage.max">
+                        <ng-container *ngFor="let item of dbRooms ">
                             <tr class="text-white">
                                 <td>{{item.id}}</td>
                                 <td>{{item.roomNum}}</td>
@@ -55,14 +96,15 @@
                                 <td>{{item.block}}</td>
                                 <td>{{item.sectionStudentLimit}}</td>
                                 <td>{{item.examStudentLimit}}</td>
+                                <td>{{item.examPriority}}</td>
                                 <td>{{item.campus}}</td>
-                                <td  *ngIf="role=='SuperAdmin'||role=='Admin'"><i class="edit fa fa-edit "></i></td>
+                                <td  *ngIf="role=='SuperAdmin'||role=='Admin'"><i (click)="onEdit(item)" class="edit fa fa-edit "></i></td>
                             </tr>
                         </ng-container>
                     </tbody>
                 </table>
             </div>
-            <div class="col-12 justify-content-end">
+            <!-- <div class="col-12 justify-content-end"> | slice:roomsPages.currentPage.min:roomsPages.currentPage.max
                 <nav aria-label="Page navigation example" data-bs-theme="dark">
                     <ul class="pagination ">
                         <li class="page-item">
@@ -87,7 +129,7 @@
                         </li>
                     </ul>
                 </nav>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

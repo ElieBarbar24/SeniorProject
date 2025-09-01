@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { UserStoreService } from '../../services/user-store.service';
 import { NgToastService } from 'ng-angular-popup';
 import { ApiService } from '../../services/api.service';
 import { ExcelService } from '../../services/excel.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { MatDialog } from '@angular/material/dialog';
+import { SectionEditComponent } from './section-edit/section-edit.component';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-section',
@@ -11,6 +15,12 @@ import { ExcelService } from '../../services/excel.service';
   styleUrl: './section.component.css'
 })
 export class SectionComponent implements OnInit {
+  @ViewChild('EditModal') EditModal: ModalDirective | undefined;
+  dbCampuses:any[]=[];
+  dbInstructors:any[]=[];
+  dbRooms:any[]=[];
+  dbCourses:any[]=[];
+
   academicYear: string = '';
   selectedSemestre: string = '';
 
@@ -26,9 +36,24 @@ export class SectionComponent implements OnInit {
   toastDuration: number = 5000;
   role!: string;
 
-  allowedRoles:string[] = ['SuperAdmin','Admin'];
 
-  constructor(private auth: AuthService, private userStore: UserStoreService, private toast: NgToastService, private api: ApiService, private excel: ExcelService) {
+  newSectionCourseId:string|undefined;
+  newSectionRoomId:string|undefined;
+  newSectionInstructorId:string|undefined;
+  m:boolean = false;
+  T:boolean = false;
+  W:boolean = false;
+  Th:boolean = false;
+  newSectionStartTime:string|undefined;
+  newSectionEndTime:string|undefined;
+  newSectionAcademicYear:string|undefined;
+  newSectionMaxNumber:string|undefined;
+  newSectionSemestre:string|undefined;
+  newSectionLetter:string|undefined;
+
+  allowedRoles: string[] = ['SuperAdmin', 'Admin'];
+
+  constructor(private dialog: MatDialog,private auth: AuthService, private userStore: UserStoreService, private toast: NgToastService, private api: ApiService, private excel: ExcelService) {
 
   }
 
@@ -40,6 +65,10 @@ export class SectionComponent implements OnInit {
       });
 
     this.getSections();
+    this.getCourses();
+    this.getCampuses();
+    this.getInstructors();
+    this.getRooms();
   }
 
   readSectionsFromExcel(event: any): void {
@@ -86,25 +115,31 @@ export class SectionComponent implements OnInit {
     }
     return true
   }
+
   uploadSections() {
     var sectionsRequestFormat: SectionsRequestFormat[] = this.createRequestFormat();
     console.log(sectionsRequestFormat);
     if (this.academicYear != '' && this.selectedSemestre != '' && sectionsRequestFormat.length != 0) {
       this.api.setSections(sectionsRequestFormat).subscribe({
         next: (value) => {
+          console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
           console.log(value);
+          console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+          this.toast.success({ detail: "Success", summary: "Sections Upload Successfull", duration: this.toastDuration });
+
           this.getSections();
-          if(value.unfoundRoom.length==0&&value.unfoundCourses.length==0&&value.unfoundInstructors.length==0){
+          /*if (value.unfoundRoom.length == 0 && value.unfoundCourses.length == 0 && value.unfoundInstructors.length == 0) {
+            this.getSections();
             this.toast.success({ detail: "Success", summary: "Sections Upload Successfull", duration: this.toastDuration });
           }
-          else{
-
-          }
+          else {
+            this.getSections();
+          }*/
         },
         error: (err) => {
           console.log(err.message);
           this.toast.error({ detail: "ERROR", summary: "Server Error", duration: this.toastDuration });
-
+          
         }
       })
 
@@ -140,13 +175,99 @@ export class SectionComponent implements OnInit {
   getSections() {
     this.api.getSections().subscribe({
       next: (data) => {
+        console.log(data);
         this.dbSections = data;
-        console.log(this.dbSections);
-        var page: number = this.dbSections!.length;
-        this.tablePages.push(new Page(0, this.maxRows))
-        while (this.tablePages[this.tablePages.length - 1].max < page) {
-          this.tablePages.push(new Page(this.tablePages[this.tablePages.length - 1].min + this.maxRows, this.tablePages[this.tablePages.length - 1].max + this.maxRows))
-        }
+      }
+    })
+  }
+
+  getCampuses(){
+    this.api.getCampuses().subscribe({
+      next:(data)=>{
+        this.dbCampuses = data;
+      },
+      error:(err)=>{
+
+      }
+    })
+  }
+
+  getInstructors(){
+    this.api.getInst().subscribe({
+      next:(data)=>{
+        this.dbInstructors = data;
+        console.log(this.dbInstructors);
+      }
+    })
+  }
+
+  getRooms(){
+    this.api.getRoomsData().subscribe({
+      next:(data)=>{
+        this.dbRooms = data;
+      }
+    })
+  }
+  
+  getCourses(){
+    this.api.getCourses().subscribe({
+      next:(data)=>{
+        this.dbCourses = data;
+      }
+    })
+  }
+
+  onEdit(item:any){
+    const dialogRef = this.dialog.open(SectionEditComponent,{
+      disableClose: true,
+      autoFocus: false,
+      enterAnimationDuration: '0.2s',
+      data: {
+        section: item,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        var udpatedSection:any = result;
+
+        this.api.updateSection(udpatedSection).subscribe({
+          next:(res)=>{
+            this.toast.success({ detail: "Success", summary: "Section Updated successfully", duration: this.toastDuration });
+            this.getSections();
+          },
+          error:(error)=>{
+            this.toast.error({ detail: "ERROR", summary: error.error.message, duration: this.toastDuration });
+          }
+        })
+      }
+    })
+  }
+
+  onSubmit(){
+    var newSection:NewSection = new NewSection();
+    newSection.courseId = this.newSectionCourseId;
+    newSection.instructorId = this.newSectionInstructorId;
+    newSection.roomId = this.newSectionRoomId;
+    newSection.m = this.m;
+    newSection.t = this.T;
+    newSection.w = this.W;
+    newSection.th = this.Th;
+    newSection.academicYear = this.newSectionAcademicYear;
+    newSection.startTime = this.newSectionStartTime;
+    newSection.endTime =this.newSectionEndTime;
+    newSection.sectionLetter = this.newSectionLetter;
+    newSection.semestre = this.newSectionSemestre;
+
+    console.log(newSection);
+    this.api.newSection(newSection).subscribe({
+      next:(res)=>{
+        console.log(res);
+        this.toast.success({ detail: "Success", summary: "Sections Upload Successfull", duration: this.toastDuration });
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toast.error({ detail: "ERROR", summary: "Server Error", duration: this.toastDuration });
       }
     })
   }
@@ -207,4 +328,19 @@ export class SectionsRequestFormat {
   Instructor: string | undefined;
   AcademicYear: string | undefined;
   semestre: string | undefined;
+}
+
+export class NewSection{
+  courseId:string|undefined;
+  instructorId:string|undefined;
+  roomId:string|undefined;
+  sectionLetter:string|undefined;
+  startTime:string|undefined;
+  endTime:string|undefined;
+  m:boolean|undefined;
+  t:boolean|undefined;
+  w:boolean|undefined;
+  th:boolean|undefined;
+  academicYear:string|undefined;
+  semestre:string|undefined;
 }

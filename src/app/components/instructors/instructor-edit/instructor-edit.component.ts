@@ -17,6 +17,8 @@ export class InstructorEditComponent implements OnInit{
   selectedDepartement:string='';
   selectedSchool:string='';
   selectedCampus:string='';
+  instProctoringAvailibility:boolean=true;
+
   fname:string;
   mname:string;
   lname:string;
@@ -29,6 +31,7 @@ export class InstructorEditComponent implements OnInit{
     this.lname = data.instructor.lname;
     this.title = data.instructor.title;
     this.email = data.instructor.email;
+    this.instProctoringAvailibility = data.instructor.proctoringAvailibility;
   }
 
   onClose(){
@@ -72,6 +75,7 @@ export class InstructorEditComponent implements OnInit{
       title:this.title,
       email:this.email,
       depId:this.selectedDepartement,
+      proctoringAvailibility:this.instProctoringAvailibility
     }
 
     if(this.selectedDepartement==''){

@@ -1,1 +1,284 @@
-<p>exam-schedule works!</p>
+<div class="container-fluid">
+    <div class="p-2 row">
+        <div class="col-sm-12 col-md-6" *ngIf="allowedRoles.includes(role)">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="row g-3 text-white" data-bs-theme="dark">
+                    <h4>Enter Exam Schedule Excel File</h4>
+                    <div class="col-lg-4 col-12">
+                        <div class="input-group">
+                            <input [(ngModel)]="newExamsAcademicYear" type="text" class="form-control"
+                                placeholder="Academic Year" aria-label="Academic Year"
+                                aria-describedby="addon-wrapping" />
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <select [(ngModel)]="newExamsType" class="form-select">
+                            <option value="" selected disabled hidden>
+                                Select Exam Type
+                            </option>
+                            <ng-container *ngFor="let e of ExamTypes">
+                                <option value="{{e.id}}">{{e.type}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <select [(ngModel)]="newExmasSemestre" class="form-select">
+                            <option value="" selected disabled hidden>
+                                Select Exam Semestre
+                            </option>
+                            <option value="Fall">Fall</option>
+                            <option value="Spring">Spring</option>
+                            <option value="Summer">Summer</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <select [(ngModel)]="newExamsCampus" class="form-select">
+                            <option value="" selected disabled hidden>
+                                Select Exams Campus
+                            </option>
+                            <ng-container *ngFor="let e of dbCampuses">
+                                <option value="{{e.id}}">{{e.campusesName}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class="input-group" data-bs-theme="dark">
+                        <input type="file" id="inputGroupFile04" (change)="readExamsDates($event)"
+                            aria-describedby="inputGroupFileAddon04" aria-label="Upload" class="form-control">
+                        <button (click)="onSubmit()" class="btn text-white btn-secondary" type="button"
+                            id="inputGroupFileAddon04">Upload
+                            Exam Schedule</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-dark p-4 rounded-4 col-sm-12 col-md-6 pt-4 pt-sm-4 pt-md-0" *ngIf="allowedRoles.includes(role)">
+            <div class="row p-2 text-white" data-bs-theme="dark">
+                <div class="col-lg-4 col-md-4 col-12">
+                    <h5>Choose Exam Type</h5>
+                    <select [(ngModel)]="ExamType" class="form-select">
+                        <option value="" selected disabled hidden>
+                            Select Exam Type
+                        </option>
+                        <ng-container *ngFor="let e of ExamTypes">
+                            <option value="{{e.type}}">{{e.type}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+                    <h5>Choose Semestre</h5>
+                    <select [(ngModel)]="Semestre" class="form-select">
+                        <option value="" selected disabled hidden>
+                            Choose Semestre
+                        </option>
+                        <option value="Fall">Fall</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+                    <h5>Choose Academic Year</h5>
+                    <select [(ngModel)]="AcademicYear" class="form-select">
+                        <option value="" selected disabled hidden>
+                            Choose Academic Year
+                        </option>
+                        <ng-container *ngFor="let a of UniqueAcademicYear">
+                            <option value="{{a}}"> {{a}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+                    <h5>Choose Academic Year</h5>
+                    <select [(ngModel)]="Campus" class="form-select">
+                        <option value="" selected disabled hidden>
+                            Choose Campus
+                        </option>
+                        <ng-container *ngFor="let a of dbCampuses">
+                            <option value="{{a.campusesName}}"> {{a.campusesName}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="text-start p-2">
+                    <button (click)="onGenerateRooms()" class="btn btn-secondary" type="button" id="button-addon1">
+                        Generate Exam Rooms
+                    </button>
+                </div>
+                <div class="text-start p-2">
+                    <button (click)="onGenerateProctors()" class="btn btn-secondary" type="button" id="button-addon2">
+                        Generate Exam Proctors
+                    </button>
+                </div>
+                <div class="text-start p-2">
+                    <button (click)="onDownload()" class="btn btn-secondary" type="" id="button-addon3">
+                        Download Schedule
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4 row">
+            <div class="bg-dark rounded-4" data-bs-theme="dark">
+                <div class="row p-2 text-white">
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <h5>Choose Exam Type</h5>
+                        <select [(ngModel)]="searchByExamType" (change)="onchange()" class="form-select">
+                            <option value="" selected disabled hidden>
+                                Select Exam Type
+                            </option>
+                            <ng-container *ngFor="let e of ExamTypes">
+                                <option value="{{e.type}}">{{e.type}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <h5>Choose Semestre</h5>
+                        <select [(ngModel)]="searchBySemestre" (change)="onchange()" class="form-select">
+                            <option value="" selected disabled hidden>
+                                Choose Semestre
+                            </option>
+                            <option value="Fall">Fall</option>
+                            <option value="Spring">Spring</option>
+                            <option value="Summer">Summer</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <h5>Choose Academic Year</h5>
+                        <select [(ngModel)]="searchByAcademicYear" (change)="onchange()" class="form-select">
+                            <option value="" selected disabled hidden>
+                                Choose Academic Year
+                            </option>
+                            <ng-container *ngFor="let a of UniqueAcademicYear">
+                                <option value="{{a}}"> {{a}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <h5>Choose Academic Year</h5>
+                        <select [(ngModel)]="searchByCampus" (change)="onchange()" class="form-select">
+                            <option value="" selected disabled hidden>
+                                Choose Campus
+                            </option>
+                            <ng-container *ngFor="let a of dbCampuses">
+                                <option value="{{a.campusesName}}"> {{a.campusesName}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-4 m-4 table-responsive">
+                    <table class="table table-hover" data-bs-theme="dark">
+                        <thead>
+                            <tr>
+                                <!-- <th scope="col">ID</th> -->
+                                <th scope="col">Course Code</th>
+                                <th scope="col">Course Name</th>
+                                <th scope="col">Section</th>
+                                <th scope="col">Instructor</th>
+                                <th scope="col">Final Exam Time</th>
+                                <th scope="col">Final Exam Room</th>
+                                <th scope="col">Student Number</th>
+                                <!-- <th scope="col">School</th> -->
+                                <!-- <th scope="col">Campus</th> -->
+                                <th scope="col">Final Exam Date</th>
+                                <!-- <th scope="col">Academic Year</th>
+                            <th scope="col">Semestre</th>
+                            <th scope="col">Exam Type</th> -->
+                                <th scope="col">Proctors</th>
+                                <th scope="col">Proctors Chief</th>
+                                <th scope="col" *ngIf="allowedRoles.includes(role)">Edit</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of dbExams">
+                                <tr class="text-white">
+                                    <!-- <td>{{item.examId}}</td> -->
+                                    <td>{{item.courseCode}}</td>
+                                    <td>{{item.courseTitle}}</td>
+                                    <td>{{item.sectionLetter}}</td>
+                                    <td [ngClass]="{'bg-danger':item.intName=='Unknown Instructor'}">{{item.intName}}
+                                    </td>
+                                    <td>{{item.time}}</td>
+                                    <td>{{item.room}}</td>
+                                    <td>{{item.sectionStNb}}</td>
+                                    <!-- <td>{{"School"}}</td> -->
+                                    <!-- <td>{{item.examCampusName}}</td> -->
+                                    <td>{{item.date}}</td>
+                                    <!-- <td>{{item.academicYear}}</td>
+                                <td>{{item.semestre}}</td>
+                                <td>{{item.examTypeName}}</td> -->
+                                    <td class="col" >
+                                        <ng-container *ngIf="item.proctors.length!=0">
+                                            <ng-container *ngFor="let proctor of item.proctors; let last = last">
+                                                <span [ngClass]="{'bg-danger': proctor.isOutOfSchedule}">{{
+                                                    proctor.username }}</span><span>{{ last ? '' : ', ' }}</span> 
+                                            </ng-container>
+                                        </ng-container>
+                                    </td>
+
+                                    <td class="col"><ng-container
+                                            *ngIf="item.proctors.length!=0&&item.chiefProctor!=null">{{item.chiefProctor.username}}</ng-container>
+                                    </td>
+                                    <td *ngIf="allowedRoles.includes(role)">
+                                        <a class="edit-icon" (click)="onEdit(item)"><i class="fa fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade dark" bsModal data-bs-theme="dark" #GenerateProctorsConfirmation="bs-modal"
+    [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="dialog-static-name" class="modal-title pull-left text-white">Warning !!!!!!!!!!</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close"
+                    (click)="GenerateProctorsConfirmation.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-white">Are you sure you want to recreate the schedule of Proctors</p>
+                <p class="text-white">This will reset any edits on the existing schedule you did</p>
+                <!-- Description Text -->
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        (click)="GenerateProctorsConfirmation.hide()">Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="generateProctors()">Confirm</button>
+                </div>
+                <!-- Confirm and Cancel Buttons -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade dark" bsModal data-bs-theme="dark" #GenerateExamRoomConfirmation="bs-modal"
+    [config]="{backdrop: 'static'}" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="dialog-static-name" class="modal-title pull-left text-white">Warning !!!!!!!!!!</h4>
+                <button type="button" class="btn-close close pull-right" aria-label="Close"
+                    (click)="GenerateProctorsConfirmation.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-white">Are you sure you want to recreate the schedule of Rooms</p>
+                <p class="text-white">This will reset any edits on the existing schedule you did</p>
+                <!-- Description Text -->
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        (click)="GenerateExamRoomConfirmation.hide()">Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="generateExamRooms()">Confirm</button>
+                </div>
+                <!-- Confirm and Cancel Buttons -->
+            </div>
+        </div>
+    </div>
+</div>

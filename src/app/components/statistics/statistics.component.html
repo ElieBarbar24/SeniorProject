@@ -1,0 +1,62 @@
+<!-- <div class="container-fluid">
+    <div class="p-2 row">
+        <div class="col-sm-12 col-md-6">
+            <div class="bg-dark p-4 rounded-4">
+                <div class="bg-dark p-4 rounded-4 col-sm-12 col-md-6 pt-4 pt-sm-4 pt-md-0">
+                    <div class="row p-2 text-white" data-bs-theme="dark">
+                        <div class="col-lg-4 col-md-4 col-12">
+                            <h5>Choose Exam Type</h5>
+                            <select [(ngModel)]="ExamType" class="form-select">
+                                <option value="" selected disabled hidden>
+                                    Select Exam Type
+                                </option>
+                                <ng-container *ngFor="let e of ExamTypes">
+                                    <option value="{{e.type}}">{{e.type}}</option>
+                                </ng-container>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12">
+                            <h5>Choose Semestre</h5>
+                            <select [(ngModel)]="Semestre" class="form-select">
+                                <option value="" selected disabled hidden>
+                                    Choose Semestre
+                                </option>
+                                <option value="Fall">Fall</option>
+                                <option value="Spring">Spring</option>
+                                <option value="Summer">Summer</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12">
+                            <h5>Choose Academic Year</h5>
+                            <select [(ngModel)]="AcademicYear" class="form-select">
+                                <option value="" selected disabled hidden>
+                                    Choose Academic Year
+                                </option>
+                                <ng-container *ngFor="let a of UniqueAcademicYear">
+                                    <option value="{{a}}"> {{a}}</option>
+                                </ng-container>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12">
+                            <h5>Choose Academic Year</h5>
+                            <select [(ngModel)]="Campus" class="form-select">
+                                <option value="" selected disabled hidden>
+                                    Choose Campus
+                                </option>
+                                <ng-container *ngFor="let a of dbCampuses">
+                                    <option value="{{a.campusesName}}"> {{a.campusesName}}</option>
+                                </ng-container>
+                            </select>
+                        </div>
+
+                        <div class="text-start p-2">
+                            <button (click)="onDownload()" class="btn btn-secondary" type="" id="button-addon2">
+                                Download Schedule
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
